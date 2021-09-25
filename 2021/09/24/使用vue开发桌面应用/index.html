@@ -23,28 +23,28 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.brzhang.club","root":"/","images":"/images","scheme":"Muse","darkmode":true,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":true,"pangu":true,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="添加一个主题主题我选择的是这个 https:&#x2F;&#x2F;github.com&#x2F;zhwangart&#x2F;hexo-theme-ocean 如果愿意折腾，完全可以自己选择一个 添加评论系统，虽然看的人也不都，但要有给自己的博客加一个评论系统，采用的是gitalk ，这个玩意还挺简单的，在 github 上申请一个 AuthApp 就 ok 啦，填入相应的参数，搞定，参考这篇文章。 https:&#x2F;&#x2F;iochen.c">
+<meta name="description" content="####  Vue 不仅限于开发 Web 和原生移动应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：  跨平台：所有应用程序均采用JavaScript开发，可打包为Windows&#x2F;MacOS&#x2F;Linux； 易于构建：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序； 社区：如果您维护一个开源桌面项目，您将更有可能为">
 <meta property="og:type" content="article">
-<meta property="og:title" content="给博客加一个评论">
-<meta property="og:url" content="https://blog.brzhang.club/2021/09/21/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%AF%84%E8%AE%BA/index.html">
+<meta property="og:title" content="使用Vue开发桌面应用">
+<meta property="og:url" content="https://blog.brzhang.club/2021/09/24/%E4%BD%BF%E7%94%A8vue%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8/index.html">
 <meta property="og:site_name" content="心随我动">
-<meta property="og:description" content="添加一个主题主题我选择的是这个 https:&#x2F;&#x2F;github.com&#x2F;zhwangart&#x2F;hexo-theme-ocean 如果愿意折腾，完全可以自己选择一个 添加评论系统，虽然看的人也不都，但要有给自己的博客加一个评论系统，采用的是gitalk ，这个玩意还挺简单的，在 github 上申请一个 AuthApp 就 ok 啦，填入相应的参数，搞定，参考这篇文章。 https:&#x2F;&#x2F;iochen.c">
+<meta property="og:description" content="####  Vue 不仅限于开发 Web 和原生移动应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：  跨平台：所有应用程序均采用JavaScript开发，可打包为Windows&#x2F;MacOS&#x2F;Linux； 易于构建：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序； 社区：如果您维护一个开源桌面项目，您将更有可能为">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-09-21T09:25:38.000Z">
-<meta property="article:modified_time" content="2021-09-21T09:28:32.547Z">
+<meta property="article:published_time" content="2021-09-24T01:11:07.000Z">
+<meta property="article:modified_time" content="2021-09-25T01:00:30.665Z">
 <meta property="article:author" content="hz">
-<meta property="article:tag" content="博客">
+<meta property="article:tag" content="Vue">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://blog.brzhang.club/2021/09/21/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%AF%84%E8%AE%BA/">
+<link rel="canonical" href="https://blog.brzhang.club/2021/09/24/%E4%BD%BF%E7%94%A8vue%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.brzhang.club/2021/09/21/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%AF%84%E8%AE%BA/","path":"2021/09/21/给博客加一个评论/","title":"给博客加一个评论"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.brzhang.club/2021/09/24/%E4%BD%BF%E7%94%A8vue%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8/","path":"2021/09/24/使用vue开发桌面应用/","title":"使用Vue开发桌面应用"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>给博客加一个评论 | 心随我动</title>
+<title>使用Vue开发桌面应用 | 心随我动</title>
   
 
 
@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E4%B8%80%E4%B8%AA%E4%B8%BB%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">添加一个主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9F%EF%BC%8C%E8%99%BD%E7%84%B6%E7%9C%8B%E7%9A%84%E4%BA%BA%E4%B9%9F%E4%B8%8D%E9%83%BD%EF%BC%8C%E4%BD%86%E8%A6%81%E6%9C%89"><span class="nav-number">2.</span> <span class="nav-text">添加评论系统，虽然看的人也不都，但要有</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Electron"><span class="nav-number">1.</span> <span class="nav-text">Electron</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#NW-js"><span class="nav-number">2.</span> <span class="nav-text">NW.js</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Quasar-Framework"><span class="nav-number">3.</span> <span class="nav-text">Quasar Framework</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vuido"><span class="nav-number">4.</span> <span class="nav-text">Vuido</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -216,7 +216,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/09/21/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%AF%84%E8%AE%BA/">
+    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/09/24/%E4%BD%BF%E7%94%A8vue%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -229,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          给博客加一个评论
+          使用Vue开发桌面应用
         </h1>
 
         <div class="post-meta-container">
@@ -239,10 +239,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-09-21 17:25:38 / 修改时间：17:28:32" itemprop="dateCreated datePublished" datetime="2021-09-21T17:25:38+08:00">2021-09-21</time>
+      <time title="创建时间：2021-09-24 09:11:07" itemprop="dateCreated datePublished" datetime="2021-09-24T09:11:07+08:00">2021-09-24</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2021-09-25 09:00:30" itemprop="dateModified" datetime="2021-09-25T09:00:30+08:00">2021-09-25</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -270,10 +276,148 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <div id="vip-container"><h3 id="添加一个主题"><a href="#添加一个主题" class="headerlink" title="添加一个主题"></a>添加一个主题</h3><p>主题我选择的是这个 <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">https://github.com/zhwangart/hexo-theme-ocean</a></p>
-<p>如果愿意折腾，完全可以自己选择一个</p>
-<h3 id="添加评论系统，虽然看的人也不都，但要有"><a href="#添加评论系统，虽然看的人也不都，但要有" class="headerlink" title="添加评论系统，虽然看的人也不都，但要有"></a>添加评论系统，虽然看的人也不都，但要有</h3><p>给自己的博客加一个评论系统，采用的是<code>gitalk</code> ，这个玩意还挺简单的，在 github 上申请一个 AuthApp 就 ok 啦，填入相应的参数，搞定，参考这篇文章。</p>
-<p><a target="_blank" rel="noopener" href="https://iochen.com/post/use-gitalk-in-hexo/">https://iochen.com/post/use-gitalk-in-hexo/</a></p>
+        <div id="vip-container"><p>#### </p>
+<p>Vue 不仅限于开发 Web 和<a target="_blank" rel="noopener" href="https://vue-community.org/guide/ecosystem/mobile-apps.html">原生移动</a>应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：</p>
+<ul>
+<li><strong>跨平台</strong>：所有应用程序均采用JavaScript开发，可打包为Windows/MacOS/Linux；</li>
+<li><strong>易于构建</strong>：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序；</li>
+<li><strong>社区</strong>：如果您维护一个开源桌面项目，您将更有可能为它找到贡献者。</li>
+</ul>
+<p>然而，有一些缺点，所有 JavaScript 驱动的桌面应用程序都很常见。它们往往具有较大的包大小（至少 30 MB），并且已知内存使用量很大。</p>
+<p>使用 Vue 构建桌面应用程序主要有两种方式：基于 HTML+CSS 的解决方案或原生 GUI。第一个是 Electron 和 NW.js，第二个是 Vuido。</p>
+<h4 id="Electron"><a href="#Electron" class="headerlink" title="Electron"></a><a target="_blank" rel="noopener" href="https://electronjs.org/">Electron</a></h4><p><a target="_blank" rel="noopener" href="https://electronjs.org/">Electron</a>是由 GitHub 开发的开源库，用于使用 HTML、CSS 和 JavaScript 构建跨平台桌面应用程序。Electron 通过将<a target="_blank" rel="noopener" href="http://www.chromium.org/">Chromium</a>和<a target="_blank" rel="noopener" href="https://nodejs.org/en/">Node.js</a>组合成一个运行时来实现这一点，并且可以为 Mac、Windows 和 Linux 打包应用程序</p>
+<p>Electron 是目前最流行的用于编写 JavaScript 桌面应用程序的库。一些比较知名的应用程序是<a target="_blank" rel="noopener" href="https://slack.com/">Slack</a>和<a target="_blank" rel="noopener" href="https://discordapp.com/">Discord</a> messengers、<a target="_blank" rel="noopener" href="https://atom.io/">Atom</a>代码编辑器和<a target="_blank" rel="noopener" href="https://code.visualstudio.com/">Visual Studio Code</a> IDE。</p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容易上手</td>
+<td>打包比较大</td>
+<td></td>
+</tr>
+<tr>
+<td>良好的开发文档</td>
+<td>内存占用高</td>
+<td></td>
+</tr>
+<tr>
+<td>无需更改现有源代码</td>
+<td>包中未受保护的源代码</td>
+<td></td>
+</tr>
+<tr>
+<td>有<a target="_blank" rel="noopener" href="https://github.com/nklayman/vue-cli-plugin-electron-builder">Vue CLI 插件</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>成熟的开发者社区</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="NW-js"><a href="#NW-js" class="headerlink" title="NW.js"></a><a target="_blank" rel="noopener" href="https://nwjs.io/">NW.js</a></h4><p><a target="_blank" rel="noopener" href="https://nwjs.io/">NW.js</a>（以前称为 node-webkit）是一个使用 HTML、CSS 和 JavaScript 构建桌面应用程序的框架。与<a target="_blank" rel="noopener" href="https://vue-community.org/guide/ecosystem/desktop-apps.html#electron">Electron</a>类似，它基于 Chromium 和 Node.js。NW.js 允许您直接从浏览器调用 Node.js 代码和模块，并在您的应用程序中使用 Web 技术。此外，您可以轻松地将 Web 应用程序打包为本机应用程序。</p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容易上手</td>
+<td>打包比较大</td>
+<td></td>
+</tr>
+<tr>
+<td>无需更改现有源代码</td>
+<td>内存占用高</td>
+<td></td>
+</tr>
+<tr>
+<td>编译为受保护的二进制文件</td>
+<td>使用率明显低于 Electron</td>
+<td></td>
+</tr>
+<tr>
+<td>有<a target="_blank" rel="noopener" href="https://github.com/NataliaTepluhina/vue-cli-plugin-nwjs">Vue CLI 插件</a></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="Quasar-Framework"><a href="#Quasar-Framework" class="headerlink" title="Quasar Framework"></a><a target="_blank" rel="noopener" href="https://quasar.dev/">Quasar Framework</a></h4><p><a target="_blank" rel="noopener" href="https://quasar.dev/">Quasar Framework</a>是一个允许跨平台应用程序开发的框架。使用大型 VueJS 组件库设计您的应用程序，然后使用 Quasar 强大而简单易用的 CLI 通过 Electron 为桌面自动构建您的应用程序。如果您希望对您的代码做更多的事情而不仅仅是 Electron 应用程序，那么 Quasar 是您跨平台应用程序想法的绝佳解决方案。</p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容易上手</td>
+<td>桌面也比较大</td>
+<td></td>
+</tr>
+<tr>
+<td>无需更改现有源代码</td>
+<td>内存占用高</td>
+<td></td>
+</tr>
+<tr>
+<td>可以打包到各种平台，Android，iOS，以及桌面，网页等</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="Vuido"><a href="#Vuido" class="headerlink" title="Vuido"></a><a target="_blank" rel="noopener" href="https://vuido.mimec.org/">Vuido</a></h4><p><a target="_blank" rel="noopener" href="https://vuido.mimec.org/">Vuido</a>是一个基于 Vue.js 创建原生桌面应用程序的框架。使用 Vuido 的应用程序可以使用原生 GUI 组件在 Windows、OS X 和 Linux 上运行。</p>
+<p>在幕后，Vuido 使用<a target="_blank" rel="noopener" href="https://github.com/andlabs/libui">libui</a>库为每个桌面平台提供原生 GUI 组件，以及用于 Node.js的<a target="_blank" rel="noopener" href="https://github.com/parro-it/libui-node">libui-node</a>绑定。</p>
+<p>Vuido 和 Electron 或 NW.js 之间的核心区别在于，您不会在 Vuido 中使用 HTML 标签或 CSS 样式，您只能使用操作系统平台提供的一组预定义的 UI 组件。</p>
+<table>
+<thead>
+<tr>
+<th>优点</th>
+<th>缺点</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容易上手</td>
+<td>外观仅限于操作系统本机 GUI 组件</td>
+<td></td>
+</tr>
+<tr>
+<td>无需更改现有源代码</td>
+<td>没有 Vue CLI 插件，只有 Vue CLI 2 样板</td>
+<td></td>
+</tr>
+<tr>
+<td>可以打包到各种桌面版本</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>与 Electron 或 NW.js 应用程序相比，提供更小的封装尺寸</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>有据可查</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>总结，如果你想使用vue来构建全平台应用，而且还要颜值OK的话，选择<a target="_blank" rel="noopener" href="https://quasar.dev/">Quasar Framework</a> 是正确的</p>
 </div>
 
 			<script src="https://my.openwrite.cn/js/readmore.js" type="text/javascript"></script>
@@ -299,18 +443,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"># 博客</a>
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
+                <a href="/2021/09/22/%E5%A6%82%E4%BD%95%E5%81%9A%E4%B8%80%E4%B8%AA%E5%A5%BDleader/" rel="prev" title="管理者应该做的事情">
+                  <i class="fa fa-chevron-left"></i> 管理者应该做的事情
+                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/09/21/%E4%B8%BA%E5%95%A5API%E8%AE%BE%E8%AE%A1%E5%A6%82%E6%AD%A4%E9%87%8D%E8%A6%81/" rel="next" title="为啥API设计如此重要">
-                  为啥API设计如此重要 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -390,7 +534,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bravekingzhang","repo":"bravekingzhang.github.io","client_id":"ba71a05708000167b907","client_secret":"bb63761e5b045b3b10ba0ebf3fc8250b2fb9b239","admin_user":"bravekingzhang","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"2371a991ed102b10e1af3ec6c113aa94"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bravekingzhang","repo":"bravekingzhang.github.io","client_id":"ba71a05708000167b907","client_secret":"bb63761e5b045b3b10ba0ebf3fc8250b2fb9b239","admin_user":"bravekingzhang","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"18b436f125f524e716f5af9b42b92d87"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
