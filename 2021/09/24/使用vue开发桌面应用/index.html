@@ -23,15 +23,15 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.brzhang.club","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="####  Vue 不仅限于开发 Web 和原生移动应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：  跨平台：所有应用程序均采用JavaScript开发，可打包为Windows&#x2F;MacOS&#x2F;Linux； 易于构建：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序； 社区：如果您维护一个开源桌面项目，您将更有可能为">
+<meta name="description" content="Vue 不仅限于开发 Web 和原生移动应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：  跨平台：所有应用程序均采用JavaScript开发，可打包为Windows&#x2F;MacOS&#x2F;Linux； 易于构建：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序； 社区：如果您维护一个开源桌面项目，您将更有可能为它找到贡献者">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用Vue开发桌面应用">
 <meta property="og:url" content="https://blog.brzhang.club/2021/09/24/%E4%BD%BF%E7%94%A8vue%E5%BC%80%E5%8F%91%E6%A1%8C%E9%9D%A2%E5%BA%94%E7%94%A8/index.html">
 <meta property="og:site_name" content="心随我动">
-<meta property="og:description" content="####  Vue 不仅限于开发 Web 和原生移动应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：  跨平台：所有应用程序均采用JavaScript开发，可打包为Windows&#x2F;MacOS&#x2F;Linux； 易于构建：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序； 社区：如果您维护一个开源桌面项目，您将更有可能为">
+<meta property="og:description" content="Vue 不仅限于开发 Web 和原生移动应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：  跨平台：所有应用程序均采用JavaScript开发，可打包为Windows&#x2F;MacOS&#x2F;Linux； 易于构建：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序； 社区：如果您维护一个开源桌面项目，您将更有可能为它找到贡献者">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-09-24T01:11:07.000Z">
-<meta property="article:modified_time" content="2021-09-25T01:00:30.665Z">
+<meta property="article:modified_time" content="2021-10-07T02:36:36.940Z">
 <meta property="article:author" content="hz">
 <meta property="article:tag" content="Vue">
 <meta name="twitter:card" content="summary">
@@ -158,18 +158,18 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-count">8</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
           <a href="/categories/">
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">6</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -247,7 +247,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-09-25 09:00:30" itemprop="dateModified" datetime="2021-09-25T09:00:30+08:00">2021-09-25</time>
+        <time title="修改时间：2021-10-07 10:36:36" itemprop="dateModified" datetime="2021-10-07T10:36:36+08:00">2021-10-07</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -276,8 +276,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>#### </p>
-<p>Vue 不仅限于开发 Web 和<a target="_blank" rel="noopener" href="https://vue-community.org/guide/ecosystem/mobile-apps.html">原生移动</a>应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：</p>
+        <p>Vue 不仅限于开发 Web 和<a target="_blank" rel="noopener" href="https://vue-community.org/guide/ecosystem/mobile-apps.html">原生移动</a>应用程序，它还允许构建桌面应用程序。以下是人们选择 Vue 而不是本地语言解决方案的一些重要原因：</p>
 <ul>
 <li><strong>跨平台</strong>：所有应用程序均采用JavaScript开发，可打包为Windows/MacOS/Linux；</li>
 <li><strong>易于构建</strong>：框架允许您简单地开发 Web 应用程序，然后使用打包程序将其“转换”为桌面应用程序；</li>
@@ -328,28 +327,23 @@
 <tr>
 <th>优点</th>
 <th>缺点</th>
-<th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>容易上手</td>
 <td>打包比较大</td>
-<td></td>
 </tr>
 <tr>
 <td>无需更改现有源代码</td>
 <td>内存占用高</td>
-<td></td>
 </tr>
 <tr>
 <td>编译为受保护的二进制文件</td>
 <td>使用率明显低于 Electron</td>
-<td></td>
 </tr>
 <tr>
 <td>有<a target="_blank" rel="noopener" href="https://github.com/NataliaTepluhina/vue-cli-plugin-nwjs">Vue CLI 插件</a></td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -359,23 +353,19 @@
 <tr>
 <th>优点</th>
 <th>缺点</th>
-<th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>容易上手</td>
 <td>桌面也比较大</td>
-<td></td>
 </tr>
 <tr>
 <td>无需更改现有源代码</td>
 <td>内存占用高</td>
-<td></td>
 </tr>
 <tr>
 <td>可以打包到各种平台，Android，iOS，以及桌面，网页等</td>
-<td></td>
 </tr>
 </tbody>
 </table>
@@ -387,33 +377,27 @@
 <tr>
 <th>优点</th>
 <th>缺点</th>
-<th></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>容易上手</td>
 <td>外观仅限于操作系统本机 GUI 组件</td>
-<td></td>
 </tr>
 <tr>
 <td>无需更改现有源代码</td>
 <td>没有 Vue CLI 插件，只有 Vue CLI 2 样板</td>
-<td></td>
 </tr>
 <tr>
 <td>可以打包到各种桌面版本</td>
-<td></td>
 <td></td>
 </tr>
 <tr>
 <td>与 Electron 或 NW.js 应用程序相比，提供更小的封装尺寸</td>
 <td></td>
-<td></td>
 </tr>
 <tr>
 <td>有据可查</td>
-<td></td>
 </tr>
 </tbody>
 </table>
