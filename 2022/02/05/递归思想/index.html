@@ -23,28 +23,30 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.brzhang.club","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="研究表明，老板平均60%以上的时间花在业务上，20%的时间花在跟他的老板、客户的相处上。最后剩下的20%的时间才能花在管理团队上，按照平均每个管理者管理6个下属来看，管理者能花在你身上的时间只占3%。 用心做的决定，然后找数据证明自己这个决定当你用数据解释A方案比B方案好，你老板却提出其他奇奇怪怪的理由证明B方案更好或者索性说“让我再考虑考虑”，结果这一考虑就没下文了。现在你知道为什么了吧？因为你">
+<meta name="description" content="递归把规模为N的问题变成规模为N-1的问题，需要注意边界条件，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。  最常使用在树的遍历 文件的遍历  最重要的思想是问题分解思想；   比如，青蛙上台阶问题，话说这个青蛙可以每次跳1步，或者每次跳2步，请问他跳到第N阶台阶需要多少步。  这就是一个典型的可以用递归法去解决的问题，  递推方程：f(n) &#x3D; f(n-1)">
 <meta property="og:type" content="article">
-<meta property="og:title" content="一次精彩的汇报是怎么样的">
-<meta property="og:url" content="https://blog.brzhang.club/2021/10/07/%E4%B8%80%E6%AC%A1%E7%B2%BE%E5%BD%A9%E7%9A%84%E6%B1%87%E6%8A%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/index.html">
+<meta property="og:title" content="递归思想">
+<meta property="og:url" content="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/index.html">
 <meta property="og:site_name" content="心随我动">
-<meta property="og:description" content="研究表明，老板平均60%以上的时间花在业务上，20%的时间花在跟他的老板、客户的相处上。最后剩下的20%的时间才能花在管理团队上，按照平均每个管理者管理6个下属来看，管理者能花在你身上的时间只占3%。 用心做的决定，然后找数据证明自己这个决定当你用数据解释A方案比B方案好，你老板却提出其他奇奇怪怪的理由证明B方案更好或者索性说“让我再考虑考虑”，结果这一考虑就没下文了。现在你知道为什么了吧？因为你">
+<meta property="og:description" content="递归把规模为N的问题变成规模为N-1的问题，需要注意边界条件，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。  最常使用在树的遍历 文件的遍历  最重要的思想是问题分解思想；   比如，青蛙上台阶问题，话说这个青蛙可以每次跳1步，或者每次跳2步，请问他跳到第N阶台阶需要多少步。  这就是一个典型的可以用递归法去解决的问题，  递推方程：f(n) &#x3D; f(n-1)">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-10-07T03:13:46.000Z">
-<meta property="article:modified_time" content="2021-10-07T05:20:29.960Z">
+<meta property="og:image" content="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/image-20220206192348508.png">
+<meta property="article:published_time" content="2022-02-05T01:51:30.000Z">
+<meta property="article:modified_time" content="2022-02-07T12:20:48.691Z">
 <meta property="article:author" content="hz">
-<meta property="article:tag" content="沟通">
+<meta property="article:tag" content="default">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/image-20220206192348508.png">
 
 
-<link rel="canonical" href="https://blog.brzhang.club/2021/10/07/%E4%B8%80%E6%AC%A1%E7%B2%BE%E5%BD%A9%E7%9A%84%E6%B1%87%E6%8A%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/">
+<link rel="canonical" href="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.brzhang.club/2021/10/07/%E4%B8%80%E6%AC%A1%E7%B2%BE%E5%BD%A9%E7%9A%84%E6%B1%87%E6%8A%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/","path":"2021/10/07/一次精彩的汇报是怎么样的/","title":"一次精彩的汇报是怎么样的"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/","path":"2022/02/05/递归思想/","title":"递归思想"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>一次精彩的汇报是怎么样的 | 心随我动</title>
+<title>递归思想 | 心随我动</title>
   
 
 
@@ -145,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%94%A8%E5%BF%83%E5%81%9A%E7%9A%84%E5%86%B3%E5%AE%9A%EF%BC%8C%E7%84%B6%E5%90%8E%E6%89%BE%E6%95%B0%E6%8D%AE%E8%AF%81%E6%98%8E%E8%87%AA%E5%B7%B1%E8%BF%99%E4%B8%AA%E5%86%B3%E5%AE%9A"><span class="nav-number">1.</span> <span class="nav-text">用心做的决定，然后找数据证明自己这个决定</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%AB%98%E6%89%8B%E7%9A%84%E4%B8%80%E4%BA%9B%E5%81%9A%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">高手的一些做法</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%AE%B2%E5%A5%BD%E6%95%85%E4%BA%8B"><span class="nav-number"></span> <span class="nav-text">如何讲好故事</span></a></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%92%E5%BD%92"><span class="nav-number">1.</span> <span class="nav-text">递归</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A8%E5%BD%92"><span class="nav-number">2.</span> <span class="nav-text">动归</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%82%A3%E6%A0%B7%E7%9A%84%E9%A2%98%E7%9B%AE%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92%E6%96%B9%E5%BC%8F%E8%A7%A3%E5%86%B3"><span class="nav-number">2.1.</span> <span class="nav-text">那样的题目可以使用动态规划方式解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%B0%86%E5%8E%9F%E9%97%AE%E9%A2%98%E5%88%86%E8%A7%A3%E4%B8%BA%E5%AD%90%E9%97%AE%E9%A2%98"><span class="nav-number">2.2.</span> <span class="nav-text">将原问题分解为子问题</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E7%8A%B6%E6%80%81"><span class="nav-number">2.3.</span> <span class="nav-text">确定状态</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E4%B8%80%E4%BA%9B%E5%88%9D%E5%A7%8B%E7%8A%B6%E6%80%81%EF%BC%88%E8%BE%B9%E7%95%8C%E7%8A%B6%E6%80%81%EF%BC%89%E7%9A%84%E5%80%BC"><span class="nav-number">2.4.</span> <span class="nav-text">确定一些初始状态（边界状态）的值</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E7%8A%B6%E6%80%81%E8%BD%AC%E7%A7%BB%E6%96%B9%E7%A8%8B"><span class="nav-number">2.5.</span> <span class="nav-text">确定状态转移方程</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B7%B1%E6%90%9C"><span class="nav-number">3.</span> <span class="nav-text">深搜</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -216,7 +218,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/10/07/%E4%B8%80%E6%AC%A1%E7%B2%BE%E5%BD%A9%E7%9A%84%E6%B1%87%E6%8A%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/">
+    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -229,7 +231,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          一次精彩的汇报是怎么样的
+          递归思想
         </h1>
 
         <div class="post-meta-container">
@@ -239,17 +241,23 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2021-10-07 11:13:46 / 修改时间：13:20:29" itemprop="dateCreated datePublished" datetime="2021-10-07T11:13:46+08:00">2021-10-07</time>
+      <time title="创建时间：2022-02-05 09:51:30" itemprop="dateCreated datePublished" datetime="2022-02-05T09:51:30+08:00">2022-02-05</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-02-07 20:20:48" itemprop="dateModified" datetime="2022-02-07T20:20:48+08:00">2022-02-07</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">管理</span></a>
+          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
         </span>
     </span>
 
@@ -270,29 +278,66 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>研究表明，老板平均60%以上的时间花在业务上，20%的时间花在跟他的老板、客户的相处上。最后剩下的20%的时间才能花在管理团队上，按照平均每个管理者管理6个下属来看，管理者能花在你身上的时间只占3%。</p>
-<h5 id="用心做的决定，然后找数据证明自己这个决定"><a href="#用心做的决定，然后找数据证明自己这个决定" class="headerlink" title="用心做的决定，然后找数据证明自己这个决定"></a>用心做的决定，然后找数据证明自己这个决定</h5><p>当你用数据解释A方案比B方案好，你老板却提出其他奇奇怪怪的理由证明B方案更好或者索性说“让我再考虑考虑”，结果这一考虑就没下文了。现在你知道为什么了吧？因为你总想着用数据和事实说服他的“脑”，却并没有打动他的“心”。</p>
-<h5 id="高手的一些做法"><a href="#高手的一些做法" class="headerlink" title="高手的一些做法"></a>高手的一些做法</h5><ol>
-<li>通过类比、比喻这样的修辞手法，也可以让我们把复杂的概念变得浅显易懂，深入浅出地解释一些复杂的问题，有效地表达自己的思想</li>
-<li>冲突升级，随着剧情层层递进的冲突不断升级，最后变得无比强大</li>
+        <h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><p>把规模为N的问题变成规模为N-1的问题，需要注意<strong>边界条件</strong>，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。</p>
+<ol>
+<li>最常使用在树的遍历</li>
+<li>文件的遍历</li>
 </ol>
-<h4 id="如何讲好故事"><a href="#如何讲好故事" class="headerlink" title="如何讲好故事"></a>如何讲好故事</h4><ol>
-<li>一是要“清晰”。<ul>
-<li>没听懂的都是白搭。你得明白想表达什么，要有一条主线，其他内容都是串在主线上的珍珠，如果没有那根线，所有内容就散了。</li>
-</ul>
-</li>
-<li>二是要“好奇”。<ul>
-<li>那怎么让人产生好奇呢？美国著名的经济心理学家乔治·勒文施泰因认为，好奇心来源于某种“认知差距”，当一个人意识到自己的“认知差距”时，就会产生对信息的饥渴感。</li>
-</ul>
-</li>
-<li>第三是“共鸣”。<ul>
-<li>第一层是最简单的共鸣，来源于共同的经历、背景、目标等，就是所谓的“有共同语言”。</li>
-<li>第二层共鸣来自共同的感受，比如痛苦、喜悦、愤怒、难过等。</li>
-<li>第三层来自价值观层面的共鸣。马丁路德金，若为自由故两者皆可抛..，民主，共和三民主义等等</li>
-</ul>
+<p>最重要的思想是<strong>问题分解</strong>思想；</p>
+<blockquote>
+<p> 比如，青蛙上台阶问题，话说这个青蛙可以每次跳1步，或者每次跳2步，请问他跳到第N阶台阶需要多少步。</p>
+</blockquote>
+<p>这就是一个典型的可以用递归法去解决的问题，</p>
+<ol>
+<li>递推方程：f(n) = f(n-1) + f(n-2) </li>
+<li>递推终止条件： f(1)=1,f(2)=2</li>
+</ol>
+<h4 id="动归"><a href="#动归" class="headerlink" title="动归"></a>动归</h4><p>可以理解为递归的升级版本，需要抽象出最优子结构和无后效性。</p>
+<p>常用大框架解法</p>
+<ol>
+<li>查表法：递归+表查询</li>
+<li>人人为我，递推</li>
+</ol>
+<p>最经典的问题是最长公共子序列，动态规划没有固定的解法，具体问题具体分析：</p>
+<ol>
+<li>怎么设计这个状态</li>
+<li>状态的转移</li>
+</ol>
+<h5 id="那样的题目可以使用动态规划方式解决"><a href="#那样的题目可以使用动态规划方式解决" class="headerlink" title="那样的题目可以使用动态规划方式解决"></a>那样的题目可以使用动态规划方式解决</h5><ol>
+<li><strong>问题具有最优子结构性质</strong>。如果问题的最优解所包含的 子问题的解也是最优的，我们就称该问题具有最优子结 构性质。</li>
+<li><strong>无后效性</strong>。当前的若干个状态值一旦确定，则此后过程 的演变就只和这若干个状态的值有关，和之前是采取哪 种手段或经过哪条路径演变到当前的这若干个状态，没有关系。<ol>
+<li>坑点，最长递增子序列，这种子问题的结构的分解。</li>
+</ol>
 </li>
 </ol>
-<p>当你把自己的观点强加于人的时候，不但剥夺了别人的愉悦感，效果也很有限（此处“脑补”你爸妈的唠叨）。教导不等于说教，没有一个人喜欢被说教。一个好的教导的故事不会敲着我们的脑袋指指点点，而是帮助听众去反思自己的价值观，探索自己的动力，找到属于自己的答案。</p>
+<blockquote>
+<p>递归到动规的一般转化方法</p>
+</blockquote>
+<p>递归函数有n个参数，就定义一个n维的数组，数组 的下标是递归函数参数的取值范围，数组元素的值 是递归函数的返回值，这样就可以从边界值开始， 逐步填充数组，相当于计算递归函数值的逆过程。</p>
+<blockquote>
+<p>动规解题的一般思路</p>
+</blockquote>
+<ol>
+<li><h5 id="将原问题分解为子问题"><a href="#将原问题分解为子问题" class="headerlink" title="将原问题分解为子问题"></a>将原问题分解为子问题</h5><ol>
+<li>把原问题分解为若干个子问题，子问题和原问题形式相同或类似，只不过规模变小了。子问题都解决，原问题即解决(数字三角形例）。</li>
+<li>子问题的解一旦求出就会被保存，所以每个子问题只需求解一次(查表法，但是需要定义一个大的数组)。</li>
+</ol>
+</li>
+<li><h5 id="确定状态"><a href="#确定状态" class="headerlink" title="确定状态"></a>确定状态</h5><ol>
+<li>在用动态规划解题时，我们往往将和子问题相 关的<strong>各个变量的一组取值</strong>，称之为一个“<strong>状态</strong>”。一个“状态”对应于一个或多个子问题， 所谓某个“状态”下的“值”，就是这个“状 态”所对应的子问题的解</li>
+</ol>
+</li>
+<li><h5 id="确定一些初始状态（边界状态）的值"><a href="#确定一些初始状态（边界状态）的值" class="headerlink" title="确定一些初始状态（边界状态）的值"></a>确定一些初始状态（边界状态）的值</h5><ol>
+<li>以“数字三角形”为例，初始状态就是底边数字，值 就是底边数字值。</li>
+<li>以最长公共子序列来说，初始状态就是全0，然后一行一行的递推下去。</li>
+</ol>
+</li>
+<li><h5 id="确定状态转移方程"><a href="#确定状态转移方程" class="headerlink" title="确定状态转移方程"></a>确定状态转移方程</h5><ol>
+<li>定义出什么是“状态”，以及在该 “状态”下的“值”后，就要 找出不同的状态之间如何迁移――即如何从一个或多个“值”已知的 “状态”，求出另一个“状态”的“值”(“人人为我”递推型)。状 态的迁移可以用递推公式表示，此递推公式也可被称作“状态转移方 程”。</li>
+</ol>
+</li>
+</ol>
+<h4 id="深搜"><a href="#深搜" class="headerlink" title="深搜"></a>深搜</h4><p><img src="/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/image-20220206192348508.png" alt="image-20220206192348508"></p>
 
     </div>
 
@@ -302,20 +347,20 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%B2%9F%E9%80%9A/" rel="tag"># 沟通</a>
+              <a href="/tags/default/" rel="tag"># default</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/" rel="prev" title="记录给Iphone7换了电池">
-                  <i class="fa fa-chevron-left"></i> 记录给Iphone7换了电池
+                <a href="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/" rel="prev" title="我解决了Vscode中vue方法跳转的难题">
+                  <i class="fa fa-chevron-left"></i> 我解决了Vscode中vue方法跳转的难题
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2021/10/07/%E5%A6%82%E4%BD%95%E8%A6%81%E8%B5%84%E6%BA%90/" rel="next" title="如何要资源">
-                  如何要资源 <i class="fa fa-chevron-right"></i>
+                <a href="/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/" rel="next" title="Node创建长连接">
+                  Node创建长连接 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -394,7 +439,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bravekingzhang","repo":"bravekingzhang.github.io","client_id":"ba71a05708000167b907","client_secret":"bb63761e5b045b3b10ba0ebf3fc8250b2fb9b239","admin_user":"bravekingzhang","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"7dea89bfbf5ccb83376ca4ea45882607"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bravekingzhang","repo":"bravekingzhang.github.io","client_id":"ba71a05708000167b907","client_secret":"bb63761e5b045b3b10ba0ebf3fc8250b2fb9b239","admin_user":"bravekingzhang","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"33e980022bc754a5edbb32cad1d7cb7c"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>

@@ -23,23 +23,28 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.brzhang.club","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta property="og:type" content="website">
-<meta property="og:title" content="心随我动">
-<meta property="og:url" content="https://blog.brzhang.club/index.html">
+<meta name="description" content="通过request源码分析 if (!self.agent) &amp;#123;     if (options.agentOptions) &amp;#123;       self.agentOptions &#x3D; options.agentOptions     &amp;#125;      if (options.agentClass) &amp;#123;       self.agentClass &#x3D; options">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Node创建长连接">
+<meta property="og:url" content="https://blog.brzhang.club/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/index.html">
 <meta property="og:site_name" content="心随我动">
+<meta property="og:description" content="通过request源码分析 if (!self.agent) &amp;#123;     if (options.agentOptions) &amp;#123;       self.agentOptions &#x3D; options.agentOptions     &amp;#125;      if (options.agentClass) &amp;#123;       self.agentClass &#x3D; options">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-20T13:12:40.000Z">
+<meta property="article:modified_time" content="2022-02-20T14:25:54.800Z">
 <meta property="article:author" content="hz">
+<meta property="article:tag" content="default">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://blog.brzhang.club/">
+<link rel="canonical" href="https://blog.brzhang.club/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.brzhang.club/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/","path":"2022/02/20/node创建长连接/","title":"Node创建长连接"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>心随我动</title>
+<title>Node创建长连接 | 心随我动</title>
   
 
 
@@ -199,16 +204,17 @@
 </noscript>
 
 
-    <div class="main-inner index posts-expand">
+    <div class="main-inner post posts-expand">
 
-    
+
+  
 
 
 <div class="post-block">
   
   
 
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -221,9 +227,9 @@
       <meta itemprop="name" content="心随我动">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">Node创建长连接</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Node创建长连接
+        </h1>
 
         <div class="post-meta-container">
           <div class="post-meta">
@@ -247,6 +253,13 @@
     </span>
 
   
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
 </div>
 
         </div>
@@ -256,7 +269,7 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>通过<a target="_blank" rel="noopener" href="https://github.com/request/request/blob/master/request.js">request源码</a>分析</p>
+        <p>通过<a target="_blank" rel="noopener" href="https://github.com/request/request/blob/master/request.js">request源码</a>分析</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>self<span class="token punctuation">.</span>agent<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span>options<span class="token punctuation">.</span>agentOptions<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
       self<span class="token punctuation">.</span>agentOptions <span class="token operator">=</span> options<span class="token punctuation">.</span>agentOptions
@@ -591,7 +604,6 @@ events will be emitted <span class="token keyword">in</span> the following order
   <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ERR_INVALID_FD_TYPE</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-      
     </div>
 
     
@@ -599,8 +611,21 @@ events will be emitted <span class="token keyword">in</span> the following order
     
 
     <footer class="post-footer">
-        <div class="post-eof"></div>
-      
+          <div class="post-tags">
+              <a href="/tags/default/" rel="tag"># default</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/" rel="prev" title="递归思想">
+                  <i class="fa fa-chevron-left"></i> 递归思想
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
     </footer>
   </article>
 </div>
@@ -608,1091 +633,9 @@ events will be emitted <span class="token keyword">in</span> the following order
 
 
 
-    
 
 
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/" class="post-title-link" itemprop="url">递归思想</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-02-05 09:51:30" itemprop="dateCreated datePublished" datetime="2022-02-05T09:51:30+08:00">2022-02-05</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-02-07 20:20:48" itemprop="dateModified" datetime="2022-02-07T20:20:48+08:00">2022-02-07</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><p>把规模为N的问题变成规模为N-1的问题，需要注意<strong>边界条件</strong>，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。</p>
-<ol>
-<li>最常使用在树的遍历</li>
-<li>文件的遍历</li>
-</ol>
-<p>最重要的思想是<strong>问题分解</strong>思想；</p>
-<blockquote>
-<p> 比如，青蛙上台阶问题，话说这个青蛙可以每次跳1步，或者每次跳2步，请问他跳到第N阶台阶需要多少步。</p>
-</blockquote>
-<p>这就是一个典型的可以用递归法去解决的问题，</p>
-<ol>
-<li>递推方程：f(n) = f(n-1) + f(n-2) </li>
-<li>递推终止条件： f(1)=1,f(2)=2</li>
-</ol>
-<h4 id="动归"><a href="#动归" class="headerlink" title="动归"></a>动归</h4><p>可以理解为递归的升级版本，需要抽象出最优子结构和无后效性。</p>
-<p>常用大框架解法</p>
-<ol>
-<li>查表法：递归+表查询</li>
-<li>人人为我，递推</li>
-</ol>
-<p>最经典的问题是最长公共子序列，动态规划没有固定的解法，具体问题具体分析：</p>
-<ol>
-<li>怎么设计这个状态</li>
-<li>状态的转移</li>
-</ol>
-<h5 id="那样的题目可以使用动态规划方式解决"><a href="#那样的题目可以使用动态规划方式解决" class="headerlink" title="那样的题目可以使用动态规划方式解决"></a>那样的题目可以使用动态规划方式解决</h5><ol>
-<li><strong>问题具有最优子结构性质</strong>。如果问题的最优解所包含的 子问题的解也是最优的，我们就称该问题具有最优子结 构性质。</li>
-<li><strong>无后效性</strong>。当前的若干个状态值一旦确定，则此后过程 的演变就只和这若干个状态的值有关，和之前是采取哪 种手段或经过哪条路径演变到当前的这若干个状态，没有关系。<ol>
-<li>坑点，最长递增子序列，这种子问题的结构的分解。</li>
-</ol>
-</li>
-</ol>
-<blockquote>
-<p>递归到动规的一般转化方法</p>
-</blockquote>
-<p>递归函数有n个参数，就定义一个n维的数组，数组 的下标是递归函数参数的取值范围，数组元素的值 是递归函数的返回值，这样就可以从边界值开始， 逐步填充数组，相当于计算递归函数值的逆过程。</p>
-<blockquote>
-<p>动规解题的一般思路</p>
-</blockquote>
-<ol>
-<li><h5 id="将原问题分解为子问题"><a href="#将原问题分解为子问题" class="headerlink" title="将原问题分解为子问题"></a>将原问题分解为子问题</h5><ol>
-<li>把原问题分解为若干个子问题，子问题和原问题形式相同或类似，只不过规模变小了。子问题都解决，原问题即解决(数字三角形例）。</li>
-<li>子问题的解一旦求出就会被保存，所以每个子问题只需求解一次(查表法，但是需要定义一个大的数组)。</li>
-</ol>
-</li>
-<li><h5 id="确定状态"><a href="#确定状态" class="headerlink" title="确定状态"></a>确定状态</h5><ol>
-<li>在用动态规划解题时，我们往往将和子问题相 关的<strong>各个变量的一组取值</strong>，称之为一个“<strong>状态</strong>”。一个“状态”对应于一个或多个子问题， 所谓某个“状态”下的“值”，就是这个“状 态”所对应的子问题的解</li>
-</ol>
-</li>
-<li><h5 id="确定一些初始状态（边界状态）的值"><a href="#确定一些初始状态（边界状态）的值" class="headerlink" title="确定一些初始状态（边界状态）的值"></a>确定一些初始状态（边界状态）的值</h5><ol>
-<li>以“数字三角形”为例，初始状态就是底边数字，值 就是底边数字值。</li>
-<li>以最长公共子序列来说，初始状态就是全0，然后一行一行的递推下去。</li>
-</ol>
-</li>
-<li><h5 id="确定状态转移方程"><a href="#确定状态转移方程" class="headerlink" title="确定状态转移方程"></a>确定状态转移方程</h5><ol>
-<li>定义出什么是“状态”，以及在该 “状态”下的“值”后，就要 找出不同的状态之间如何迁移――即如何从一个或多个“值”已知的 “状态”，求出另一个“状态”的“值”(“人人为我”递推型)。状 态的迁移可以用递推公式表示，此递推公式也可被称作“状态转移方 程”。</li>
-</ol>
-</li>
-</ol>
-<h4 id="深搜"><a href="#深搜" class="headerlink" title="深搜"></a>深搜</h4><p><img src="/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/image-20220206192348508.png" alt="image-20220206192348508"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/" class="post-title-link" itemprop="url">我解决了Vscode中vue方法跳转的难题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-02-01 13:31:25 / 修改时间：13:53:37" itemprop="dateCreated datePublished" datetime="2022-02-01T13:31:25+08:00">2022-02-01</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="第一步-创建项目"><a href="#第一步-创建项目" class="headerlink" title="第一步 创建项目"></a>第一步 创建项目</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yo code mp-sign-vscode-extension<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>根据<a target="_blank" rel="noopener" href="https://code.visualstudio.com/api/language-extensions/programmatic-language-features">vscode官网</a>描述 ，要实现一个GoDefinition的插件，需要做以下两个步骤；</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131104418874.png" alt></p>
-<h4 id="第一步，我们要在语言服务中申明支持-defintionProvider"><a href="#第一步，我们要在语言服务中申明支持-defintionProvider" class="headerlink" title="第一步，我们要在语言服务中申明支持 defintionProvider"></a>第一步，我们要在语言服务中申明支持 defintionProvider</h4><p>这样才可以在在插件加载之后出现</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131104623771.png" alt></p>
-<p>转到定义之类的菜单，但我们这里不这么做，因为，根据官网描述，这个只需要被任何一个插件申明一次即可，因为我们的项目mp-sign是一个vue项目，然后大家肯定是安装了<a target="_blank" rel="noopener" href="https://github.com/vuejs/vetur">vetur</a>这个大名鼎鼎的插件的，可以在源码中看到，</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131105203998.png" alt="image-20220131105203998"></p>
-<p>上述申明这个插件做过，因此我们可以直接略过这一步；所以我们进入第二步，实现一个<code>vscode.DefinitionProvider</code>。</p>
-<h4 id="第二步-实现vscode-DefinitionProvider"><a href="#第二步-实现vscode-DefinitionProvider" class="headerlink" title="第二步 实现vscode.DefinitionProvider"></a>第二步 实现<code>vscode.DefinitionProvider</code></h4><p>根据官网描述，我们要定义个自定义跳转的插件，需要实现一个  vscode.DefinitionProvider，其原理就是写一个方法实现，定位到源码位置vscode.Location;其原理就是，当我们按住【mac上是command建|windows上是CTRL键】+ 鼠标左键，vscode语言服务就会将当前鼠标位置捕捉到的相关信息传递到给我们这个插件，这些信息丢给vscode.DefinitionProvider 具体实现的 <code>provideDefinition</code>这个回调处理。</p>
-<p>然后根据我们mp-sign项目的特点，我们主要是解决 mixin和vuex方法定位比较难的问题。同时在实践中发现vue methods块中的方法调用也无法自动跳转，定位代码也挺烦的，因此，直接把三种方式跳转定义全部实现了；</p>
-<p>我们要实现的大体框架如下所示。</p>
-<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> vscode <span class="token keyword">from</span> <span class="token string">"vscode"</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> path <span class="token keyword">from</span> <span class="token string">"path"</span><span class="token punctuation">;</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">MpDefinitionProvider</span> <span class="token keyword">implements</span> <span class="token class-name">vscode</span><span class="token punctuation">.</span>DefinitionProvider <span class="token punctuation">&#123;</span>
-  <span class="token function">provideDefinition</span><span class="token punctuation">(</span>
-    document<span class="token operator">:</span> vscode<span class="token punctuation">.</span>TextDocument<span class="token punctuation">,</span>
-    position<span class="token operator">:</span> vscode<span class="token punctuation">.</span>Position<span class="token punctuation">,</span>
-    token<span class="token operator">:</span> vscode<span class="token punctuation">.</span>CancellationToken
-  <span class="token punctuation">)</span><span class="token operator">:</span> vscode<span class="token punctuation">.</span>ProviderResult<span class="token operator">&lt;</span>vscode<span class="token punctuation">.</span>Definition <span class="token operator">|</span> vscode<span class="token punctuation">.</span>LocationLink<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
-   
-    <span class="token keyword">const</span> location<span class="token operator">:</span>vscode<span class="token punctuation">.</span>Location <span class="token operator">=</span> <span class="token function">vueMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token function">mixinMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token function">vuexActionOrMutations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span>
-		
-    <span class="token keyword">return</span> <span class="token builtin">Promise</span><span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>
-      location
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token comment">// 是vue的内联方法</span>
-<span class="token keyword">function</span> <span class="token function">vueMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-  <span class="token comment">//TODO </span>
-  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Location</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">// 是 mixin 方法</span>
-<span class="token keyword">function</span> <span class="token function">mixinMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-   <span class="token comment">//TODO</span>
-  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">location</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token comment">// 是 Vuex 的action</span>
-<span class="token keyword">function</span> <span class="token function">vuexActionOrMutations</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-   <span class="token comment">//TODO</span>
-  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">location</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>注意看看provideDefinition这个方法，他入参有2个比较重要<code>document vs position</code>，document有一个属性是uri，这个可以方便我们拿到当前文件的path，position，顾名思义，就是当前鼠标悬停的位置，可以方便我们拿到鼠标悬停的字符串是个啥。</p>
-<p>第一个是来处理vueMethods，那么确定目前想要跳转的方法是否是本文件中的methods中的方法，我们需要解析这个vue文件，并且把里面的方法都遍历出来，然后来匹配一下，如果可以匹配到，那说明，改方法就在本文件中对吧。说干就干，解析vue文件搞起，使用 @vue/compiler-dom  的 <code>parse</code>方法。</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131142018464.png" alt="image-20220131142018464"></p>
-<p>可以看到拿到的结构中children中有三块，template/script/styles，这块内容你可以去<a target="_blank" rel="noopener" href="https://astexplorer.net/">这个网站</a>上看，选择vue就 可以看到，注意一下这里。<strong>每个块中都有一个 loc属性，他的起始位置都有明确的告知，我们这里需要记住一下template文件的end行数</strong>，后面返回vscode.Location时我们需要用到这个偏移量。</p>
-<p>通过script模块中的source字段，我们拿到该vue文件中的script块的内容，通过babel 的parse 就可以拿到语法树 AST（一点都不神秘），就可以很方便的找到里面的methods模块中的各个方法了，拿到这些模块，一一匹配，就可以确定方法是否在改文件内的，如果确定在文件内，就可以通过AST返回的loc信息明确这个定义方法在<code>&lt;script&gt;</code>块中位置了，主要是行数和列偏移。</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131124523710.png" alt="image-20220131124523710"></p>
-<p>上面这幅图可以拿到methods块，即name为methods的ObjectProperty结点，一个find方法轻松找到，同样的道理去找这个结点下面的value中的具体的我们要找的method，所以，第一个实现 vue methods的跳转定位就和么被实现了。</p>
-<p>我们先看看实现效果</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/gotoMethod.gif" alt="gotoMethod"></p>
-<h4 id="第三步-继续实现-mixin方法跳转-和-vuex-action-跳转"><a href="#第三步-继续实现-mixin方法跳转-和-vuex-action-跳转" class="headerlink" title="第三步 继续实现 mixin方法跳转 和 vuex action 跳转"></a>第三步 继续实现 mixin方法跳转 和 vuex action 跳转</h4><p>大家都知道在vue中引入mixin之后，代码定位复杂度就加大了，一个主要原因是这个方法不在这个vue文件里面，所以，如何实现呢？</p>
-<p>1、经过前面的methods环节的判断，没有找到，就进入了mixin处理块中，这里的逻辑是，找到vue中import的所有的 mixin文件，然后通过babel parse出语法树，按照上面的套路，解析出method的位置，然后生成  vscode.Location返回。</p>
-<p>2、同样的道理，vuex action的方式类似，我们这里之定位  this.$u.vuex(‘Module/action’)这类的调用 ，首先通过 document和position两个参数拿到 Module/action ，然后分别解析出 module和action ，module方便我们找到import的是按个文件，action可以通过上述ast解析的方式帮我们定位到具体方法，最后同样返回 vscode.Location。</p>
-<p>让我们来看看mixin文件跳转效果以及vuex 之 action 跳转的效果</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/mixin.gif" alt="mixin"></p>
-<h4 id="第四步-打包"><a href="#第四步-打包" class="headerlink" title="第四步 打包"></a>第四步 打包</h4><p><code>vsce package</code></p>
-<p>即可，注意node版本要在14以上，不然这个命令会执行失败，另外，如何打包之后发现插件加载失败，可以在这里看日志定位问题</p>
-<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220201135331741.png" alt="image-20220201135331741"></p>
-<p>我就碰到过，发现是以为自己安装的npm包babel以及vue解析是放在 devDependencies下的，实际上是需要放到dependencies下面，移动下重新yarn解决。</p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>研发这个插件的目的就是为了解决自己项目中遇到的方法无法跳转到定义的问题，在有这个思路到具体实现出来总共话了2天时间，其中大部分的时间都放在了研究怎么实现一款自定义插件上，主要还是参考官网，期间了解到了不少概念，比如lsp，还被这个坑过，以为实现一个gotoDefinition插件需要做一个服务端，其实后面发现不需要的，官网上其实说的不怎么详细，还是自己从github上参考了别人写的一个gotoDefinition中得出的结论，我这里不下看到8个github上关于插件的实现。</p>
-<p>document和position的用法也是从一个项目那里了解到的，具体那个忘记记录了，总之这个不重要了，重要的是，你的目标是什么，要达到这个目标你需要准备些什么知识or工具，做这个插件最大的收获是：</p>
-<p>1、学习到了github上几个优秀的插件的实现，顺带也关注了一下几个大佬的博客。</p>
-<p>2、知道了vscode gotoDefinition 的原理，后面碰到不能跳转至少知道背后的原因是啥。</p>
-<p>3、Google不一定可以帮你解决所有问题，当解决不了的时候，记得github搜索，我就是通过搜索某些api了解到其他人怎么实现的，关于插件研发Google确实能你的有限，学会使用其他渠道。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">如何设计一个糅合系统</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-12 14:38:01" itemprop="dateCreated datePublished" datetime="2021-10-12T14:38:01+08:00">2021-10-12</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-05 10:02:00" itemprop="dateModified" datetime="2021-12-05T10:02:00+08:00">2021-12-05</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>首先，关于这篇文章为何取名为设计一个<strong>糅合系统</strong>的设计，所谓的糅合系统，是指这个系统的用户群体没有那么纯粹，比如，是一个既有c端用户，又有b端用户的使用场景的系统，起初在设计这样一个系统之初，我思考过这样的一个系统会有几个问题：</p>
-<ul>
-<li>逻辑混杂，到时候会出现这个c端是这个样子的，b端为了兼容而妥协，折中出来的并不是一个好的方案，对两类用户来说都<strong>不够简洁</strong>。</li>
-<li>if/else糅合的代码可理解性比较差，随着迭代的推进，后续会越来越来维护。</li>
-<li>b端更加注重功能体验，他们要的是功能能不能满足他日常运营，而且<strong>不同类的b其功能是不同的</strong>，用户端更加注重操作体验体验是否好，当然b端也注重操作体验，但相对没c端这么匠心。</li>
-<li>不同的b端可能需要的主体风格不同，是考虑一个b一套代码，还是一套代码配置不同的b，还是一套b的框架下组合不同的工具。</li>
-<li>分离/b-part/c-part之后，如何复用公共逻辑，减少重复开发工作，公共逻辑包括哪些，下层的规则是什么，该放在何处。</li>
-<li>假如让一个新手加入进来，他怎么快速找到相应的业务的代码逻辑在何处，如何新增，修改代码已实现需求。</li>
-</ul>
-<p>基于以上这些点的思考，我首先走出了一个设计的雏形。</p>
-<h4 id="孵化"><a href="#孵化" class="headerlink" title="孵化"></a>孵化</h4><p><img src="/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/wecom-temp-ae90559c80f2c549419e1bc9bcc34488.jpg" alt="wecom-temp-ae90559c80f2c549419e1bc9bcc34488" style="zoom:60%;"></p>
-<p>首先，我们先站在上帝视角来看一看，一个用户是如何和我们的系统打交道的。第一个我们关心的是一个三要素：</p>
-<p><strong>是谁？来干什么？干什么后去哪里？</strong>我们可以用一个故事的方式来描述几个这样的案例。</p>
-<ol>
-<li>我是巴乐兔的合同管理员，我来这里给张三发起一份合同，完事之后我要回公司报备下。</li>
-<li>我是李子柒，朋友说这个挺好用的我就来了，我也不知道干什么，我更不知道我要去哪。</li>
-<li>我是黎明，是一个学生，我来签一份摩尔公司发给我的暑期实习劳务合同，完事之后我就没事啦。</li>
-<li>我是韩梅梅，是旺旺兴趣培训班的店员，我来签一份佳佳食品发给我们培训班的采购服务合同。</li>
-<li>….</li>
-</ol>
-<p>以上的场景，我们均可以从里面抛出【是谁，干啥，去哪】，这其实就是我要说的<strong>意图2.0</strong>，。</p>
-<p><img src="/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/image-20211012150705417.png" alt="image-20211012150705417" style="zoom:80%;"></p>
-<p>故事2是一个特例，实际上，不知道什么干什么也是一种干什么，不知道去哪也是一种去哪，不知道是谁也是一种是谁。</p>
-<h5 id="是谁"><a href="#是谁" class="headerlink" title="是谁"></a>是谁</h5><p>就是要确定进入系统的用户身份，是b端的用户，还是c端的用户，一旦确定了身份，这个应该是<strong>全局可知</strong>的</p>
-<ul>
-<li>isC</li>
-<li>isB</li>
-</ul>
-<h5 id="干啥"><a href="#干啥" class="headerlink" title="干啥"></a>干啥</h5><p>就是要确定是谁之后的事了，就像大家去政府办事一样，人家首先明确你是谁，然后在问你来干啥，你干啥是不是得交出一些办事的凭据来，事情的id，<strong>通过这个事情的id就对应到了不同的功能</strong>。</p>
-<p><img src="/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/image-20211012153451750.png" alt="image-20211012153451750" style="zoom:80%;"></p>
-<h5 id="去哪"><a href="#去哪" class="headerlink" title="去哪"></a>去哪</h5><p>首先每个功能有其内部的流转流程，它自己知道哪一步该去哪？但是：</p>
-<ul>
-<li>他这个内部的流程结束了呢？</li>
-<li>遇到异常了呢？</li>
-</ul>
-<p>那么他下一步将走到哪里呢？这个是这个故事里的人的是，应该把选择的权利交给他。</p>
-<h4 id="实施"><a href="#实施" class="headerlink" title="实施"></a>实施</h4><h5 id="如何确定用户身份"><a href="#如何确定用户身份" class="headerlink" title="如何确定用户身份"></a>如何确定用户身份</h5><p>要确定用户身份，我设计需要一个<strong>用户管理</strong>模块，它具备的能力有：</p>
-<ul>
-<li>切换身份，满足一部分用户既是b端用户也是c端用户的场景。</li>
-<li>申请身份</li>
-<li>登录角色</li>
-</ul>
-<p>最终是为了确定用户身份。</p>
-<h5 id="如何确定用户来干什么"><a href="#如何确定用户来干什么" class="headerlink" title="如何确定用户来干什么"></a>如何确定用户来干什么</h5><p>我们去银行我们会带上银行卡，我们去买菜会带上菜篮子，我们去做火车会带着车票，我们去考试会带上准考证….我们都会遵守一些既定的事情的协议。</p>
-<ul>
-<li>xx:bank</li>
-<li>xx:buy</li>
-<li>xx:train</li>
-<li>xx:exam</li>
-</ul>
-<p>我们去买什么东西会写一个清单，如是：</p>
-<ul>
-<li>xx:buy&amp;item1=”南瓜1斤”&amp;item2=”瓜子1公斤”</li>
-</ul>
-<p>所以，用户来干什么，都是一系列的动作，做这些动作需要一个清单才知道具体怎么做，<strong>交给谁做很容易，我们就想到了路由</strong>。</p>
-<p>路由器就是一个配置表，表述的事情是，xx:buy&amp;item1=”南瓜”&amp;item2=”瓜子1公斤”</p>
-<table>
-<thead>
-<tr>
-<th></th>
-<th>功能</th>
-<th>参数</th>
-<th>realPath</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>xx:c-buy</td>
-<td>c端买东西</td>
-<td>item1=”南瓜1斤”&amp;item2=”瓜子1公斤”</td>
-<td>pages/c-buy/index</td>
-</tr>
-<tr>
-<td>xx:b-buy</td>
-<td>b端买东西</td>
-<td>item3=”南瓜1斤”&amp;item4=”瓜子1公斤”</td>
-<td>pages/b-buy/index</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<h5 id="功能是什么？"><a href="#功能是什么？" class="headerlink" title="功能是什么？"></a>功能是什么？</h5><p><strong>功能需要是一个比较内聚的概念</strong>，他可以包含一系列的动作，有自己内部的流转流程，更具数据的状态及用户的操作来驱动页面UI 的展示，即：</p>
-<blockquote>
-<p>功能= 数据 + action + UI</p>
-</blockquote>
-<p><img src="/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/image-20211012170713165.png" alt="image-20211012170713165" style="zoom:80%;"></p>
-<p>功能，他有依赖底层的一些服务，及一些公共的工具函数。</p>
-<p><img src="/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/image-20211012171053961.png" alt="image-20211012171053961" style="zoom:70%;"></p>
-<p>那么，基础服务包括哪些呢？</p>
-<ul>
-<li>网络服务</li>
-<li>邮件服务</li>
-<li>短信服务</li>
-<li>甚至是三方服务，如人脸核身</li>
-</ul>
-<h5 id="整体的三层架构"><a href="#整体的三层架构" class="headerlink" title="整体的三层架构"></a>整体的三层架构</h5><p>经过上面的分析，我们不能达成一个从上倒下依赖的三层架构模式：</p>
-<ul>
-<li>路由层</li>
-<li>功能层</li>
-<li>基础层</li>
-</ul>
-<p><img src="/2021/10/12/%E5%A6%82%E4%BD%95%E8%AE%BE%E8%AE%A1%E4%B8%80%E4%B8%AA%E7%B3%85%E5%90%88%E7%B3%BB%E7%BB%9F/image-20211012172537275.png" alt="image-20211012172537275"></p>
-<blockquote>
-<p>路由层的作用是找到三要素【是谁，干啥，完事之后去哪】</p>
-</blockquote>
-<p><strong>拦截器</strong>是干啥的，上面已经提到，是找出三要素，找到之后如果发现非法入侵，就会把他路由到非法页。</p>
-<blockquote>
-<p>功能层是解决干啥的。</p>
-</blockquote>
-<p>功能才的Action是干啥的，是处理用户的的各种动作的，包含：</p>
-<ul>
-<li>网络请求</li>
-<li>本地请求</li>
-</ul>
-<p>这样的一些操作都的会引起数据变化，进而导致UI发生改变。UI的实现可以原生，可以web，</p>
-<blockquote>
-<p>基础层是帮助功能层很好的完成干啥的。</p>
-</blockquote>
-<h4 id="还缺点啥？"><a href="#还缺点啥？" class="headerlink" title="还缺点啥？"></a>还缺点啥？</h4><p>一个好的系统肯定是需要可观测性的，需要trace用户的行为，包含</p>
-<ul>
-<li>进入哪个页面</li>
-<li>做了哪些动作</li>
-<li>动作的前因，后果是啥</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/10/10/%E4%B8%80%E7%A7%8D%E6%8F%8F%E8%BF%B0%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E7%9A%84%E6%96%B0%E6%96%B9%E6%B3%95/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/10/%E4%B8%80%E7%A7%8D%E6%8F%8F%E8%BF%B0%E7%94%A8%E6%88%B7%E9%9C%80%E6%B1%82%E7%9A%84%E6%96%B0%E6%96%B9%E6%B3%95/" class="post-title-link" itemprop="url">一种描述用户需求的新方法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-10 17:37:56" itemprop="dateCreated datePublished" datetime="2021-10-10T17:37:56+08:00">2021-10-10</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-05 10:02:00" itemprop="dateModified" datetime="2021-12-05T10:02:00+08:00">2021-12-05</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>在研究某个问题的时候，你需要把它转换成一种认识。<strong>故事是描述认识的一种好方式。与一大堆需求描述相比，故事可以让读者更容易明白什么重要和为什么重要</strong>。</p>
-<blockquote>
-<p>什么，你觉得故事不是非常有条理或者不具备技术性？错了。管理人员无时无刻不在使用故事（想一想公司的使命），技术团队也都在讲故事（流程图和用户案例）。用户体验团队同样也写故事写了很多年了。</p>
-</blockquote>
-<h5 id="故事应该用三言两语把核心体验表达出来。"><a href="#故事应该用三言两语把核心体验表达出来。" class="headerlink" title="故事应该用三言两语把核心体验表达出来。"></a>故事应该用三言两语把核心体验表达出来。</h5><p>对于像Flip这样的数码摄像机，可以这样写：</p>
-<blockquote>
-<p>你站在香港城市街头，忽然一阵骚乱：发哥（周润发）正向你走来。</p>
-<p>你迅速从口袋里掏出你的Flip摄像机，把它交给一位路人，请他帮忙拍了一段视频，发哥就在你的身后。</p>
-<p>之后，你赶紧敲开附近朋友家的门，不需要任何安装配置，就通过他的电脑把这段视频分享到了网上。</p>
-</blockquote>
-<p>如果你正在设计一款数码摄像机，这个故事会告诉你如下重要事项。</p>
-<ul>
-<li>这个摄像机很小，可以方便地带到任何地方。也许是像一个小挂件一样，能够随身携带的那种。肯定不是只有在某些特殊场合才会用到的大摄像机。</li>
-<li>开机速度快（因为发哥不会等着你），而且拍摄简单，即使是第一次见到它的人都能够拿在手里就拍。</li>
-<li>要上传视频不需要特殊的软件或者数据线。</li>
-<li>最后，拍摄视频的目的是为了与朋友分享。</li>
-</ul>
-<p><strong>故事可以把大量信息浓缩到寥寥数语之中，效率极高。而且，故事很容易记住，很方便与人分享。</strong></p>
-<p>也就是说，在你们讨论设计决定时很可能需要准备几个故事。</p>
-<p><strong>事实上，人人都喜欢故事，即使你不讲，别人也会编出来</strong></p>
-<p>（“如果我使用这个摄像机，我就……”），让你不由得跟着他们的叙述展开想象——因此，要确保他们在使用你的故事。有必要多花点儿时间把故事的每一个细节都想清楚。如果你想让自己的设计简单，每一个细节都至关重要。</p>
-<h5 id="故事的情节要短"><a href="#故事的情节要短" class="headerlink" title="故事的情节要短"></a>故事的情节要短</h5><p>千万不要长篇大论地详细描述重大活动。要通过一个小故事展示出每一个需求点，并确定满足该需求的功能（核心功能）。这样做有3个原因。</p>
-<ul>
-<li>首先，简单的故事容易记也容易复述，因而容易被别人传播。</li>
-<li>其次，容易让别人把这个故事的情景套用到其他环境中（你可以想象在一个孩子的生日会上把你的Flip摄像机递给孩子的父母）。</li>
-<li>最后，为故事增加细节就像是拉近相机的焦距：人们会认为你要展示一些重要的信息。乐观估计，你的细节会吸引人；最差的情况，人们也会自己找到细节重要的理由。因此，务必只添加要紧的细节，这样你的故事才会真实丰满。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/10/10/%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BEAPP%E6%97%B6-%E6%88%91%E4%BB%8E%E6%9C%AA%E6%83%B3%E8%BF%87%E8%BF%99%E4%BA%9B%E5%9C%BA%E6%99%AF/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/10/%E5%BC%80%E5%8F%91%E4%B8%80%E6%AC%BEAPP%E6%97%B6-%E6%88%91%E4%BB%8E%E6%9C%AA%E6%83%B3%E8%BF%87%E8%BF%99%E4%BA%9B%E5%9C%BA%E6%99%AF/" class="post-title-link" itemprop="url">开发一款APP时,我从未想过这些场景</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-10-10 16:52:17" itemprop="dateCreated datePublished" datetime="2021-10-10T16:52:17+08:00">2021-10-10</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-12-05 10:02:00" itemprop="dateModified" datetime="2021-12-05T10:02:00+08:00">2021-12-05</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>一旦走进现实的环境，你就会发现影响用户体验的因素原来如此之多。以下是几种现成的环境。</p>
-<h4 id="办公室"><a href="#办公室" class="headerlink" title="办公室"></a>办公室</h4><ul>
-<li>在开放式的办公室里，各类人员之间会频繁地相互干扰。看吧，由于某个有意思的话题顺风传入耳朵，有人就会放下手头的工作把耳朵竖起来，人们因此而打断工作的频率会高得让你大吃一惊。</li>
-<li>来电话了，收到短信了，有新邮件了……，这些全都是干扰用户的因素。</li>
-<li>如果有人要为某个会议打印文档，他们通常都会等到最后一分钟才去打印。而忙中出错那更是常有的事儿了。家里头</li>
-<li>人们在家里边使用笔记本电脑边看电视或听收音机，花在哪方面的时间和注意力多些实在不好说。</li>
-<li>家庭宽带连接有可能不如公司的线路那么稳定，速度可能也没那么快，尤其是晚上的上网高峰期。</li>
-<li>妈妈要在孩子看动画片的30分钟左右的时间内上网购物，要从3万种商品中选择购买100种日用品。</li>
-</ul>
-<h4 id="家里头"><a href="#家里头" class="headerlink" title="家里头"></a>家里头</h4><ul>
-<li>人们在家里边使用笔记本电脑边看电视或听收音机，花在哪方面的时间和注意力多些实在不好说。</li>
-<li>家庭宽带连接有可能不如公司的线路那么稳定，速度可能也没那么快，尤其是晚上的上网高峰期。</li>
-<li>妈妈要在孩子看动画片的30分钟左右的时间内上网购物，要从3万种商品中选择购买100种日用品。</li>
-</ul>
-<h4 id="户外"><a href="#户外" class="headerlink" title="户外"></a>户外</h4><ul>
-<li>站在大街上，你会看到人们快走到十字路口时才忙着查看手机上的地图。如果这时候他们还得先看懂使用说明，那这个软件肯定是没有前途的。</li>
-<li>人们在打手机的时候可能会背着几个包，如果手机按键不够大，就会非常麻烦。</li>
-<li>人们在排队的时候可能会试用手机应用——随时都可能被打断。</li>
-<li>明亮的阳光可能会让人看不清手机屏幕。</li>
-<li>较大的设备，例如平板电脑，很容易让人觉得太重，拿着不舒服。于是，人们总会想把它们放在某个地方。</li>
-<li>在黑夜的是时候扫码骑共享单车。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/10/07/%E5%A6%82%E4%BD%95%E8%A6%81%E8%B5%84%E6%BA%90/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/07/%E5%A6%82%E4%BD%95%E8%A6%81%E8%B5%84%E6%BA%90/" class="post-title-link" itemprop="url">如何要资源</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-07 17:12:02 / 修改时间：17:19:56" itemprop="dateCreated datePublished" datetime="2021-10-07T17:12:02+08:00">2021-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">管理</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="如何找上级领导要取资源"><a href="#如何找上级领导要取资源" class="headerlink" title="如何找上级领导要取资源"></a>如何找上级领导要取资源</h4><h5 id="反面案例"><a href="#反面案例" class="headerlink" title="反面案例"></a>反面案例</h5><h5 id="上来就说你要的资源是什么，接着是打消领导的顾虑。策略是"><a href="#上来就说你要的资源是什么，接着是打消领导的顾虑。策略是" class="headerlink" title="上来就说你要的资源是什么，接着是打消领导的顾虑。策略是"></a>上来就说你要的资源是什么，接着是打消领导的顾虑。策略是</h5><blockquote>
-<p>索取资源，打消顾虑，没有背景</p>
-</blockquote>
-<p><img src="/2021/10/07/%E5%A6%82%E4%BD%95%E8%A6%81%E8%B5%84%E6%BA%90/image-20211007171623555.png" alt="image-20211007171623555"></p>
-<h5 id="下面这个案例以另外一种方式要资源"><a href="#下面这个案例以另外一种方式要资源" class="headerlink" title="下面这个案例以另外一种方式要资源"></a>下面这个案例以另外一种方式要资源</h5><blockquote>
-<p> 讲述背景，提及冲突，解决方案(获取资源)，展望结果</p>
-</blockquote>
-<p><img src="/2021/10/07/%E5%A6%82%E4%BD%95%E8%A6%81%E8%B5%84%E6%BA%90/image-20211007171221596.png" alt="image-20211007171221596"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/10/07/%E4%B8%80%E6%AC%A1%E7%B2%BE%E5%BD%A9%E7%9A%84%E6%B1%87%E6%8A%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/07/%E4%B8%80%E6%AC%A1%E7%B2%BE%E5%BD%A9%E7%9A%84%E6%B1%87%E6%8A%A5%E6%98%AF%E6%80%8E%E4%B9%88%E6%A0%B7%E7%9A%84/" class="post-title-link" itemprop="url">一次精彩的汇报是怎么样的</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-07 11:13:46 / 修改时间：13:20:29" itemprop="dateCreated datePublished" datetime="2021-10-07T11:13:46+08:00">2021-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%AE%A1%E7%90%86/" itemprop="url" rel="index"><span itemprop="name">管理</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>研究表明，老板平均60%以上的时间花在业务上，20%的时间花在跟他的老板、客户的相处上。最后剩下的20%的时间才能花在管理团队上，按照平均每个管理者管理6个下属来看，管理者能花在你身上的时间只占3%。</p>
-<h5 id="用心做的决定，然后找数据证明自己这个决定"><a href="#用心做的决定，然后找数据证明自己这个决定" class="headerlink" title="用心做的决定，然后找数据证明自己这个决定"></a>用心做的决定，然后找数据证明自己这个决定</h5><p>当你用数据解释A方案比B方案好，你老板却提出其他奇奇怪怪的理由证明B方案更好或者索性说“让我再考虑考虑”，结果这一考虑就没下文了。现在你知道为什么了吧？因为你总想着用数据和事实说服他的“脑”，却并没有打动他的“心”。</p>
-<h5 id="高手的一些做法"><a href="#高手的一些做法" class="headerlink" title="高手的一些做法"></a>高手的一些做法</h5><ol>
-<li>通过类比、比喻这样的修辞手法，也可以让我们把复杂的概念变得浅显易懂，深入浅出地解释一些复杂的问题，有效地表达自己的思想</li>
-<li>冲突升级，随着剧情层层递进的冲突不断升级，最后变得无比强大</li>
-</ol>
-<h4 id="如何讲好故事"><a href="#如何讲好故事" class="headerlink" title="如何讲好故事"></a>如何讲好故事</h4><ol>
-<li>一是要“清晰”。<ul>
-<li>没听懂的都是白搭。你得明白想表达什么，要有一条主线，其他内容都是串在主线上的珍珠，如果没有那根线，所有内容就散了。</li>
-</ul>
-</li>
-<li>二是要“好奇”。<ul>
-<li>那怎么让人产生好奇呢？美国著名的经济心理学家乔治·勒文施泰因认为，好奇心来源于某种“认知差距”，当一个人意识到自己的“认知差距”时，就会产生对信息的饥渴感。</li>
-</ul>
-</li>
-<li>第三是“共鸣”。<ul>
-<li>第一层是最简单的共鸣，来源于共同的经历、背景、目标等，就是所谓的“有共同语言”。</li>
-<li>第二层共鸣来自共同的感受，比如痛苦、喜悦、愤怒、难过等。</li>
-<li>第三层来自价值观层面的共鸣。马丁路德金，若为自由故两者皆可抛..，民主，共和三民主义等等</li>
-</ul>
-</li>
-</ol>
-<p>当你把自己的观点强加于人的时候，不但剥夺了别人的愉悦感，效果也很有限（此处“脑补”你爸妈的唠叨）。教导不等于说教，没有一个人喜欢被说教。一个好的教导的故事不会敲着我们的脑袋指指点点，而是帮助听众去反思自己的价值观，探索自己的动力，找到属于自己的答案。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/" class="post-title-link" itemprop="url">记录给Iphone7换了电池</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-10-07 10:37:12 / 修改时间：11:06:11" itemprop="dateCreated datePublished" datetime="2021-10-07T10:37:12+08:00">2021-10-07</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%89%8B%E5%B7%A5/" itemprop="url" rel="index"><span itemprop="name">手工</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>最近想换回自己的iphone7玩一玩，充满电，看下电池的最大容量居然只有79%，</p>
-<p><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110447499.png" alt="image-20211007110447499"></p>
-<p>这你也能忍？果断在某多多上买了一个电池；</p>
-<h3 id="电池哪家强"><a href="#电池哪家强" class="headerlink" title="电池哪家强"></a>电池哪家强</h3><p>只看了两家 品胜 和remax，对比了下发现最大容量差不多，发现品胜的差评比较多：</p>
-<ol>
-<li>做工不像品胜的，怀疑某些商家以次充好</li>
-<li>发现还不如以前的原装电池，掉电像跑表似的</li>
-</ol>
-<p>基于以上两点，本来想买品胜的我果断选择了remax，</p>
-<p>remax的稍微便宜10来块钱，差评还挺少见的。</p>
-<h4 id="如何拆下老电池"><a href="#如何拆下老电池" class="headerlink" title="如何拆下老电池"></a>如何拆下老电池</h4><p>电池到手之后，看到包裹里面放了一个二维码，打开是这个<a target="_blank" rel="noopener" href="https://www.iqiyi.com/v_18ahk2godsw.html?weixin_platform=friend">这个视频</a>，这里详细的介绍了如何拆下老电池的方法，大概来说分为7步：</p>
-<ol>
-<li>将充电口那里的2个啰嗦下下来，注意，最好用一片卫生纸把螺丝都搜集在一起，不然很容易丢失。<ol>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007105842711.png" alt="image-20211007105842711"></li>
-</ol>
-</li>
-<li>使用吸盘吸屏幕，顺便用塑料翘片把机身撬开，注意，先从充电口这边开始撬，然后顺着左右两边，分别撬到电源键，和声音键为止，基本上就可以打开盖子了<ol>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007105920823.png" alt="image-20211007105920823"></li>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007105952649.png" alt="image-20211007105952649"></li>
-</ol>
-</li>
-<li>打开盖子这部一定要注意，只能是由声音键的这边揭开屏幕，因为排线在电源键那边，那个很容易段开毁掉，所以，这部得千万注意，然后揭开的盖子最好不要超过 90度，实际测试110也问题不到，但是180度的话，果断排线会被你毁掉，所以，最好是用基本上靠着。<ol>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110014961.png" alt="image-20211007110014961"></li>
-</ol>
-</li>
-<li>使用螺丝刀拧开电池接线头的盖子，这部没啥风险，就是拧啰嗦，注意点在于，这个螺丝很小，小心别丢了，另外，有一个螺丝设计有点古怪，可能因为电池接线头铁盖子和螺纹口距离有点远，它是先用了一个大的螺丝点地下一层，再在螺丝上上一个螺丝。<ol>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110103787.png" alt="image-20211007110103787"></li>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110130179.png" alt="image-20211007110130179"></li>
-</ol>
-</li>
-<li>撬开电池接线和主板接口，轻轻用力就可以撬开了。</li>
-<li>把电池和手机盖子的粘胶扯下来，注意用力别太大，很容扯断，我就扯断了，不过没关系，把电子撬开点，用镊子拉出来继续往外扯。2个粘胶都扯下来后原装电池就自然很容易拿出来了。<ol>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110201498.png" alt="image-20211007110201498"></li>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110219436.png" alt="image-20211007110219436"></li>
-</ol>
-</li>
-<li>换上新买的电池来试试吧，接线和主板接好就尝试开机，不要急着把粘胶贴上了，如果可以开机，看看电池容量是否是100，如果是，就没问题了，就可以开始最后一步了。<ol>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110515588.png" alt="image-20211007110515588"></li>
-</ol>
-</li>
-<li>这时候可以贴粘胶，沾到手机盖子上，注意粘胶别贴反了，这个是要放在背面和手机金属盖贴在一起的。然后改上贴片，盖上手机，上号螺丝，大功告成。<ol>
-<li><img src="/2021/10/07/%E8%AE%B0%E5%BD%95%E7%BB%99iphone7%E6%8D%A2%E4%BA%86%E7%94%B5%E6%B1%A0/image-20211007110342412.png" alt="image-20211007110342412"></li>
-</ol>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/09/29/%E9%82%A3%E5%90%91%E5%BE%80%E7%9A%84%E9%80%80%E4%BC%91%E5%90%8E%E7%9A%84%E7%94%9F%E6%B4%BB/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/29/%E9%82%A3%E5%90%91%E5%BE%80%E7%9A%84%E9%80%80%E4%BC%91%E5%90%8E%E7%9A%84%E7%94%9F%E6%B4%BB/" class="post-title-link" itemprop="url">那向往的退休后的生活</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-09-29 10:09:11" itemprop="dateCreated datePublished" datetime="2021-09-29T10:09:11+08:00">2021-09-29</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-05 19:24:50" itemprop="dateModified" datetime="2021-10-05T19:24:50+08:00">2021-10-05</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AE%A4%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">认识</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>小桥流水人家，也许是大多数人所向往的退休后的生活；</p>
-<ol>
-<li>依山傍水渺无人烟，远离城市的喧嚣，这里有清澈的流水，清晰的空气。<ol>
-<li><img src="/2021/09/29/%E9%82%A3%E5%90%91%E5%BE%80%E7%9A%84%E9%80%80%E4%BC%91%E5%90%8E%E7%9A%84%E7%94%9F%E6%B4%BB/image-20210929102716172.png" alt="image-20210929102716172"></li>
-</ol>
-</li>
-<li>一个不大不小的宅院，小二层的别样阁楼，最好是有一个合适的院子，里面可以放上一些基础的设施：<ol>
-<li>邀请朋友来做客，沏一壶上好的龙井，几人围坐在石桌旁，品味人生</li>
-<li>累了，就在秋千上躺平，摇摇晃晃如婴儿般入睡</li>
-<li>醒来，去私人的听歌房闭幕欣赏半个小时的音乐，然后去书房与古人来一场灵魂的对话</li>
-</ol>
-</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
-
+    <div class="comments gitalk-container"></div>
 </div>
   </main>
 
@@ -1758,7 +701,7 @@ events will be emitted <span class="token keyword">in</span> the following order
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bravekingzhang","repo":"bravekingzhang.github.io","client_id":"ba71a05708000167b907","client_secret":"bb63761e5b045b3b10ba0ebf3fc8250b2fb9b239","admin_user":"bravekingzhang","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"d1546d731a9f30cc80127d57142a482b"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"bravekingzhang","repo":"bravekingzhang.github.io","client_id":"ba71a05708000167b907","client_secret":"bb63761e5b045b3b10ba0ebf3fc8250b2fb9b239","admin_user":"bravekingzhang","distraction_free_mode":true,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":"zh-CN","js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"bc058631204e9c047af218c80af790bc"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>
