@@ -40,7 +40,7 @@
 <meta property="og:image" content="https://blog.brzhang.club/2022/02/22/%E5%9C%A8linux%E4%B8%8A%E7%8E%A9%E4%B8%80%E4%B8%8BAI%E6%8B%9F%E5%A3%B0/image-20220222143111766.png">
 <meta property="og:image" content="https://blog.brzhang.club/2022/02/22/%E5%9C%A8linux%E4%B8%8A%E7%8E%A9%E4%B8%80%E4%B8%8BAI%E6%8B%9F%E5%A3%B0/image-20220222142829792.png">
 <meta property="article:published_time" content="2022-02-22T04:02:04.000Z">
-<meta property="article:modified_time" content="2022-02-22T06:31:20.085Z">
+<meta property="article:modified_time" content="2022-02-24T13:37:28.738Z">
 <meta property="article:author" content="hz">
 <meta property="article:tag" content="default">
 <meta name="twitter:card" content="summary">
@@ -249,10 +249,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-02-22 12:02:04 / 修改时间：14:31:20" itemprop="dateCreated datePublished" datetime="2022-02-22T12:02:04+08:00">2022-02-22</time>
+      <time title="创建时间：2022-02-22 12:02:04" itemprop="dateCreated datePublished" datetime="2022-02-22T12:02:04+08:00">2022-02-22</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-02-24 21:37:28" itemprop="dateModified" datetime="2022-02-24T21:37:28+08:00">2022-02-24</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -375,9 +381,9 @@ make
 make install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>step11</p>
 <pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">cd ~&#x2F;ffmpeg_sources
-curl -O -L https:&#x2F;&#x2F;ffmpeg.org&#x2F;releases&#x2F;ffmpeg-snapshot.tar.bz2
-tar xjvf ffmpeg-snapshot.tar.bz2
-cd ffmpeg
+curl -O -L https:&#x2F;&#x2F;ffmpeg.org&#x2F;releases&#x2F;ffmpeg-5.0.tar.bz2
+tar xjvf ffmpeg-5.0.tar.bz2
+cd ffmpeg-5.0
 PATH&#x3D;&quot;$HOME&#x2F;bin:$PATH&quot; PKG_CONFIG_PATH&#x3D;&quot;$HOME&#x2F;ffmpeg_build&#x2F;lib&#x2F;pkgconfig&quot; .&#x2F;configure \
   --prefix&#x3D;&quot;$HOME&#x2F;ffmpeg_build&quot; \
   --pkg-config-flags&#x3D;&quot;--static&quot; \
