@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.1">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -23,16 +23,16 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.brzhang.club","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="递归把规模为N的问题变成规模为N-1的问题，需要注意边界条件，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。  最常使用在树的遍历 文件的遍历  最重要的思想是问题分解思想；   比如，青蛙上台阶问题，话说这个青蛙可以每次跳1步，或者每次跳2步，请问他跳到第N阶台阶需要多少步。  这就是一个典型的可以用递归法去解决的问题，  递推方程：f(n) &#x3D; f(n-1)">
+<meta name="description" content="递归把规模为 N 的问题变成规模为 N-1 的问题，需要注意边界条件，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。  最常使用在树的遍历 文件的遍历  最重要的思想是问题分解思想；  比如，青蛙上台阶问题，话说这个青蛙可以每次跳 1 步，或者每次跳 2 步，请问他跳到第 N 阶台阶需要多少步。  这就是一个典型的可以用递归法去解决的问题，  递推方程：f(n)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="递归思想">
 <meta property="og:url" content="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/index.html">
 <meta property="og:site_name" content="心随我动">
-<meta property="og:description" content="递归把规模为N的问题变成规模为N-1的问题，需要注意边界条件，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。  最常使用在树的遍历 文件的遍历  最重要的思想是问题分解思想；   比如，青蛙上台阶问题，话说这个青蛙可以每次跳1步，或者每次跳2步，请问他跳到第N阶台阶需要多少步。  这就是一个典型的可以用递归法去解决的问题，  递推方程：f(n) &#x3D; f(n-1)">
+<meta property="og:description" content="递归把规模为 N 的问题变成规模为 N-1 的问题，需要注意边界条件，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。  最常使用在树的遍历 文件的遍历  最重要的思想是问题分解思想；  比如，青蛙上台阶问题，话说这个青蛙可以每次跳 1 步，或者每次跳 2 步，请问他跳到第 N 阶台阶需要多少步。  这就是一个典型的可以用递归法去解决的问题，  递推方程：f(n)">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/image-20220206192348508.png">
 <meta property="article:published_time" content="2022-02-05T01:51:30.000Z">
-<meta property="article:modified_time" content="2022-02-07T12:20:48.691Z">
+<meta property="article:modified_time" content="2022-03-27T10:42:38.718Z">
 <meta property="article:author" content="hz">
 <meta property="article:tag" content="default">
 <meta name="twitter:card" content="summary">
@@ -46,7 +46,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.brzhang.club/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/","path":"2022/02/05/递归思想/","title":"递归思想"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>递归思想 | 心随我动</title>
+<title>递归思想 | 心随我动</title><meta name="robots" content="noindex">
   
 
 
@@ -160,7 +160,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -249,7 +249,7 @@
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-02-07 20:20:48" itemprop="dateModified" datetime="2022-02-07T20:20:48+08:00">2022-02-07</time>
+        <time title="修改时间：2022-03-27 18:42:38" itemprop="dateModified" datetime="2022-03-27T18:42:38+08:00">2022-03-27</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -278,18 +278,18 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><p>把规模为N的问题变成规模为N-1的问题，需要注意<strong>边界条件</strong>，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。</p>
+        <h4 id="递归"><a href="#递归" class="headerlink" title="递归"></a>递归</h4><p>把规模为 N 的问题变成规模为 N-1 的问题，需要注意<strong>边界条件</strong>，所谓的边界条件就是指遇到这种情况可以直接得出结论，有了边界条件就可以避免无穷递归。</p>
 <ol>
 <li>最常使用在树的遍历</li>
 <li>文件的遍历</li>
 </ol>
 <p>最重要的思想是<strong>问题分解</strong>思想；</p>
 <blockquote>
-<p> 比如，青蛙上台阶问题，话说这个青蛙可以每次跳1步，或者每次跳2步，请问他跳到第N阶台阶需要多少步。</p>
+<p>比如，青蛙上台阶问题，话说这个青蛙可以每次跳 1 步，或者每次跳 2 步，请问他跳到第 N 阶台阶需要多少步。</p>
 </blockquote>
 <p>这就是一个典型的可以用递归法去解决的问题，</p>
 <ol>
-<li>递推方程：f(n) = f(n-1) + f(n-2) </li>
+<li>递推方程：f(n) = f(n-1) + f(n-2)</li>
 <li>递推终止条件： f(1)=1,f(2)=2</li>
 </ol>
 <h4 id="动归"><a href="#动归" class="headerlink" title="动归"></a>动归</h4><p>可以理解为递归的升级版本，需要抽象出最优子结构和无后效性。</p>
@@ -313,7 +313,7 @@
 <blockquote>
 <p>递归到动规的一般转化方法</p>
 </blockquote>
-<p>递归函数有n个参数，就定义一个n维的数组，数组 的下标是递归函数参数的取值范围，数组元素的值 是递归函数的返回值，这样就可以从边界值开始， 逐步填充数组，相当于计算递归函数值的逆过程。</p>
+<p>递归函数有 n 个参数，就定义一个 n 维的数组，数组 的下标是递归函数参数的取值范围，数组元素的值 是递归函数的返回值，这样就可以从边界值开始， 逐步填充数组，相当于计算递归函数值的逆过程。</p>
 <blockquote>
 <p>动规解题的一般思路</p>
 </blockquote>
@@ -329,7 +329,7 @@
 </li>
 <li><h5 id="确定一些初始状态（边界状态）的值"><a href="#确定一些初始状态（边界状态）的值" class="headerlink" title="确定一些初始状态（边界状态）的值"></a>确定一些初始状态（边界状态）的值</h5><ol>
 <li>以“数字三角形”为例，初始状态就是底边数字，值 就是底边数字值。</li>
-<li>以最长公共子序列来说，初始状态就是全0，然后一行一行的递推下去。</li>
+<li>以最长公共子序列来说，初始状态就是全 0，然后一行一行的递推下去。</li>
 </ol>
 </li>
 <li><h5 id="确定状态转移方程"><a href="#确定状态转移方程" class="headerlink" title="确定状态转移方程"></a>确定状态转移方程</h5><ol>
@@ -338,7 +338,7 @@
 </li>
 </ol>
 <h4 id="深搜"><a href="#深搜" class="headerlink" title="深搜"></a>深搜</h4><p><img src="/2022/02/05/%E9%80%92%E5%BD%92%E6%80%9D%E6%83%B3/image-20220206192348508.png" alt="image-20220206192348508"></p>
-
+<!-- flag of hidden posts -->
     </div>
 
     
@@ -352,18 +352,6 @@
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/" rel="prev" title="我解决了Vscode中vue方法跳转的难题">
-                  <i class="fa fa-chevron-left"></i> 我解决了Vscode中vue方法跳转的难题
-                </a>
-            </div>
-            <div class="post-nav-item">
-                <a href="/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/" rel="next" title="Node创建长连接">
-                  Node创建长连接 <i class="fa fa-chevron-right"></i>
-                </a>
-            </div>
-          </div>
     </footer>
   </article>
 </div>

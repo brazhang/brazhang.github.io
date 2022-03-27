@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.1">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -152,7 +152,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -200,251 +200,6 @@
 
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/" class="post-title-link" itemprop="url">小程序点击防抖哪家强</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2022-03-16 17:28:20 / 修改时间：19:20:53" itemprop="dateCreated datePublished" datetime="2022-03-16T17:28:20+08:00">2022-03-16</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>从<strong>腾讯电子签</strong>在现网问题反馈中，我们发现中发现有部分用户吐槽一些按钮不小心快速多次点击出现出现多个类似的页面，处理完业务之后回退需要退两次。虽说对于业务流程来说没有影响，但是确实影响到用户体验，所以如何优雅且<strong>强制性</strong>规范的在小程序上做防重复点击是本文研究的重点。</p>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>腾讯电子签小程序基于uni-app研发，举个栗子，通常一处存在点击的处理事件长这个样子，见下面的@click。</p>
-<pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
-   &lt;PdfItem
-       v-for&#x3D;&quot;(img, idx) in images&quot;
-       @click&#x3D;&quot;doSomeThing(idx)&quot;
-    &#x2F;&gt;
-&lt;&#x2F;template&gt;
-&lt;script&gt;
-
-export default &#123;
- 
-  data() &#123;
-    return &#123;
-      ...
-    &#125;;
-  &#125;,
-  methods: &#123;
-    doSomeThing(idx) &#123;
-      &#x2F;&#x2F;do some thing
-    &#125;,
-  &#125;,
-&#125;;
-&lt;&#x2F;script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>那么，如何做好并消灭防重复点击就是本文要研究的点。拿上面的例子来说，大概有几个方式</p>
-<ol>
-<li><p>在doSomeThing中加一个变量，当做门卫，如果方法没处理完，再次进入直接返回，恩，每个方法都需要增加一段逻辑，去设置变量，比较繁琐。</p>
-<ol>
-<li><code>`</code>javascript<br>doSomeThing(){<br>  if(isDoing){<pre><code>return
-</code></pre>  }<br>  isDoing = true<br>  ….<br>  isDoing = false<br>}<pre class="line-numbers language-none"><code class="language-none">
-2. 给doSomeThing方法增加一个debounce包裹一下，恩，比第一种略好，更加简洁点。
-
-   1. &#96;&#96;&#96;javascript
-      doSomeThing:_.debounce(function()&#123;
-        ....
-      &#125;)<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-</li>
-</ol>
-</li>
-<li><p>hook的方式hook住click方法，然后来做处理逻辑，无奈小程序也没有类似web的这种addEventListener，遂放弃。</p>
-</li>
-</ol>
-<p>找到一种好的解决方式不是难问题，难问题是：</p>
-<ol>
-<li>我们的业务代码中，已经出现了很多出没有增加防抖逻辑包裹的代码，难道线上遇到一个反馈，解决一个吗？</li>
-<li>如何限制后续编码过程中，大家写onclick代码的时候，强制加上onclick。</li>
-</ol>
-<p>很显然，对于代码规范检测，我们非常容易想到使用eslint，但是现有的eslint有这么规则吗？自然是没有的，所以，我们遇到的问题在理论上转换为了：<strong>如何开发一款插件有效的检测onClick有没有使用防抖</strong>。</p>
-<h4 id="eslint插件开搞"><a href="#eslint插件开搞" class="headerlink" title="eslint插件开搞"></a>eslint插件开搞</h4><h5 id="基本开发准备"><a href="#基本开发准备" class="headerlink" title="基本开发准备"></a>基本开发准备</h5><p>插件开发的整体流程我就不在本文的介绍当中，本文只关心如何去实现检测的逻辑及基本的程序入口和调试技巧介绍。首先，我们要检测的文件是 .vue文件，因此，我们需要在eslint大环境下解析vue语法，那么使用什么方式解析vue语法，我们需要自己开发吗，显然不是，vue肯定是有的，比如<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-eslint-parser#readme">vue-eslint-parser</a>,想要更加直观的看解析效果，可以到<a target="_blank" rel="noopener" href="https://astexplorer.net/">astexplorer</a>贴上一段vue代码看看。</p>
-<p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316185014558.png" alt="image-20220316185014558"></p>
-<p>那么，我们就可以插件的开发框架下，模拟vue文件被这个插件解析，然后生成一个语法树抛给eslint插件入口，参见下面的代码块，解析好的语法数会已node参数传入到Program函数。</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/**
- * @fileoverview onClick should wrap with debounce in page
- * @author hoollyzhang
- */</span>
-<span class="token string">'use strict'</span><span class="token punctuation">;</span>
-
-<span class="token comment">//------------------------------------------------------------------------------</span>
-<span class="token comment">// Rule Definition</span>
-<span class="token comment">//------------------------------------------------------------------------------</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'电子签防抖插件已加载'</span><span class="token punctuation">)</span>
-<span class="token comment">/**
- * @type &#123;import('eslint').Rule.RuleModule&#125;
- */</span>
-module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  meta<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    type<span class="token operator">:</span> <span class="token string">'problem'</span><span class="token punctuation">,</span> <span class="token comment">// `problem`, `suggestion`, or `layout`</span>
-    docs<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      description<span class="token operator">:</span> <span class="token string">'onClick should wrap with debounce in page'</span><span class="token punctuation">,</span>
-      category<span class="token operator">:</span> <span class="token string">'Possible Problems'</span><span class="token punctuation">,</span>
-      recommended<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-      url<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token comment">// URL to the documentation page for this rule</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    schema<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// Add a schema if the rule has options</span>
-    messages<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      missingAddDebounceClick<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">onClick method should wrap with debounce, use "import &#123; debounce &#125; from '@/utils/custom-lodash'" and wrap with it in the page.</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
-      shouldNotUseEmitThisWay<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">It is suggested to use the debounce method of wrapping</span><span class="token template-punctuation string">`</span></span>
-    <span class="token punctuation">&#125;</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-
-  <span class="token function">create</span><span class="token punctuation">(</span><span class="token parameter">context</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token comment">// variables should be defined here</span>
-
-    <span class="token comment">//----------------------------------------------------------------------</span>
-    <span class="token comment">// Helpers</span>
-    <span class="token comment">//----------------------------------------------------------------------</span>
-   
-    <span class="token comment">//----------------------------------------------------------------------</span>
-    <span class="token comment">// Public</span>
-    <span class="token comment">//----------------------------------------------------------------------</span>
-
-    <span class="token keyword">return</span> <span class="token punctuation">&#123;</span>
-      <span class="token comment">// visitor functions for different types of nodes</span>
-      <span class="token function">Program</span><span class="token punctuation">(</span><span class="token parameter">node</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-        <span class="token keyword">const</span> fileName <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">getFilename</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>fileName<span class="token punctuation">.</span><span class="token function">endsWith</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">vue</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-          <span class="token keyword">return</span>
-        <span class="token punctuation">&#125;</span>
-        <span class="token comment">//...</span>
-        <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> templateBody<span class="token punctuation">,</span>body <span class="token punctuation">&#125;</span> <span class="token operator">=</span> node
-      
-        <span class="token punctuation">[</span><span class="token operator">...</span>methods<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token operator">=></span><span class="token function">reportError</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">)</span>
-      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
-  <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>插件开发框架为了便于我们开发调试插件，提供了这样一套模板方法</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/**
- * @fileoverview Import subPackage config in page
- * @author hoollyzhang
- */</span>
- <span class="token string">'use strict'</span><span class="token punctuation">;</span>
-
- <span class="token comment">//------------------------------------------------------------------------------</span>
- <span class="token comment">// Requirements</span>
- <span class="token comment">//------------------------------------------------------------------------------</span>
-
- <span class="token keyword">const</span> rule <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../../../lib/rules/check-on-click-debounce'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">const</span> <span class="token constant">VUE_ESLINT_PARSER</span> <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token constant">NODE_MODULES</span><span class="token punctuation">,</span> <span class="token string">'vue-eslint-parser'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
- <span class="token comment">//------------------------------------------------------------------------------</span>
- <span class="token comment">// Tests</span>
- <span class="token comment">//------------------------------------------------------------------------------</span>
-
- <span class="token keyword">const</span> ruleTester <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RuleTester</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- ruleTester<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token string">'check-on-click-debounce'</span><span class="token punctuation">,</span> rule<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
-   valid<span class="token operator">:</span> <span class="token punctuation">[</span>
-     <span class="token string">'pages/vue-onclick-debounce/onclick-debounce-test-ok.vue'</span><span class="token punctuation">,</span>
-   <span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">filename</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-     code<span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'utf8'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-     filename<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span>
-     parser<span class="token operator">:</span> <span class="token constant">VUE_ESLINT_PARSER</span><span class="token punctuation">,</span>
-     parserOptions<span class="token punctuation">,</span>
-   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-
-   invalid<span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token string">'pages/vue-onclick-debounce/onclick-debounce-test-not-ok.vue'</span><span class="token punctuation">,</span>
-   <span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">filename</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-     code<span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'utf8'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-     filename<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span>
-     parser<span class="token operator">:</span> <span class="token constant">VUE_ESLINT_PARSER</span><span class="token punctuation">,</span>
-     parserOptions<span class="token punctuation">,</span>
-     errors<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span> messageId<span class="token operator">:</span> <span class="token string">'missingAddDebounceClick'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
- <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>所以，我们可以使用这个验证我们研发的eslint插件是否符合预期，而且调试起来也比较方便，在vscode上开发的话，配置一个启动项即可，比如我配置了一个launch.json;</p>
-<pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-    <span class="token comment">// 使用 IntelliSense 了解相关属性。</span>
-    <span class="token comment">// 悬停以查看现有属性的描述。</span>
-    <span class="token comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span>
-    <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.2.0"</span><span class="token punctuation">,</span>
-    <span class="token property">"configurations"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"pwa-node"</span><span class="token punctuation">,</span>
-            <span class="token property">"request"</span><span class="token operator">:</span> <span class="token string">"launch"</span><span class="token punctuation">,</span>
-            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Launch onClick test"</span><span class="token punctuation">,</span>
-            <span class="token property">"skipFiles"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-                <span class="token string">"&lt;node_internals>/**"</span>
-            <span class="token punctuation">]</span><span class="token punctuation">,</span>
-            <span class="token property">"program"</span><span class="token operator">:</span> <span class="token string">"$&#123;workspaceFolder&#125;/packages/eslint-plugin-tsign-weapp/tests/lib/rules/check-on-click-debounce.js"</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>这样一来，我们就可以展开调试了。</p>
-<p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316190601141.png" alt="image-20220316190601141"></p>
-<h5 id="检测原理介绍"><a href="#检测原理介绍" class="headerlink" title="检测原理介绍"></a>检测原理介绍</h5><p>1、首先我们需要拿到所有&lt;template 中被 @click 引用到的方法，这个可以通过递归遍历templateBody这个树解决。</p>
-<p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316191301667.png" alt="image-20220316191301667"></p>
-<p>如上图，我们只需要找到这个argument name是 click的这个结点中value里面的expression的name，就是我们要检测的方法</p>
-<p>2、基于上面找到的方法，我们在去methods的结点中去找到对应的方法，看看这个方法的body有没有被debounce包裹即可，如果没有哦就告警处理。</p>
-<h5 id="实际效果"><a href="#实际效果" class="headerlink" title="实际效果"></a>实际效果</h5><p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316191949544.png" alt="image-20220316191949544"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -3570,85 +3325,6 @@ module<span class="token punctuation">.</span><span class="token function-variab
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/03/05/%E5%8A%A8%E5%BD%92/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/03/05/%E5%8A%A8%E5%BD%92/" class="post-title-link" itemprop="url">动归</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2022-03-05 23:02:23" itemprop="dateCreated datePublished" datetime="2022-03-05T23:02:23+08:00">2022-03-05</time>
-    </span>
-      <span class="post-meta-item">
-        <span class="post-meta-item-icon">
-          <i class="far fa-calendar-check"></i>
-        </span>
-        <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2022-03-07 15:35:05" itemprop="dateModified" datetime="2022-03-07T15:35:05+08:00">2022-03-07</time>
-      </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/02/22/%E5%9C%A8linux%E4%B8%8A%E7%8E%A9%E4%B8%80%E4%B8%8BAI%E6%8B%9F%E5%A3%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -4083,6 +3759,603 @@ zip main.zip main<span aria-hidden="true" class="line-numbers-rows"><span></span
 	s<span class="token punctuation">.</span><span class="token function">ListenAndServe</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>各种测试长连接的参考链接在<a target="_blank" rel="noopener" href="https://github.com/bigwhite/experiments/tree/master/http-keep-alive">这里</a></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="hz">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="心随我动">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/20/node%E5%88%9B%E5%BB%BA%E9%95%BF%E8%BF%9E%E6%8E%A5/" class="post-title-link" itemprop="url">Node创建长连接</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-02-20 21:12:40 / 修改时间：22:48:09" itemprop="dateCreated datePublished" datetime="2022-02-20T21:12:40+08:00">2022-02-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>通过<a target="_blank" rel="noopener" href="https://github.com/request/request/blob/master/request.js">request源码</a>分析</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>self<span class="token punctuation">.</span>agent<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>options<span class="token punctuation">.</span>agentOptions<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      self<span class="token punctuation">.</span>agentOptions <span class="token operator">=</span> options<span class="token punctuation">.</span>agentOptions
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>options<span class="token punctuation">.</span>agentClass<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      self<span class="token punctuation">.</span>agentClass <span class="token operator">=</span> options<span class="token punctuation">.</span>agentClass
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>options<span class="token punctuation">.</span>forever<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">var</span> v <span class="token operator">=</span> <span class="token function">version</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token comment">// use ForeverAgent in node 0.10- only</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>v<span class="token punctuation">.</span>major <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> v<span class="token punctuation">.</span>minor <span class="token operator">&lt;=</span> <span class="token number">10</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        self<span class="token punctuation">.</span>agentClass <span class="token operator">=</span> protocol <span class="token operator">===</span> <span class="token string">'http:'</span> <span class="token operator">?</span> ForeverAgent <span class="token operator">:</span> ForeverAgent<span class="token punctuation">.</span><span class="token constant">SSL</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        self<span class="token punctuation">.</span>agentClass <span class="token operator">=</span> self<span class="token punctuation">.</span>httpModule<span class="token punctuation">.</span>Agent
+        self<span class="token punctuation">.</span>agentOptions <span class="token operator">=</span> self<span class="token punctuation">.</span>agentOptions <span class="token operator">||</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+        self<span class="token punctuation">.</span>agentOptions<span class="token punctuation">.</span>keepAlive <span class="token operator">=</span> <span class="token boolean">true</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      self<span class="token punctuation">.</span>agentClass <span class="token operator">=</span> self<span class="token punctuation">.</span>httpModule<span class="token punctuation">.</span>Agent
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>pool <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    self<span class="token punctuation">.</span>agent <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    self<span class="token punctuation">.</span>agent <span class="token operator">=</span> self<span class="token punctuation">.</span>agent <span class="token operator">||</span> self<span class="token punctuation">.</span><span class="token function">getNewAgent</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>self<span class="token punctuation">.</span>pool <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    self<span class="token punctuation">.</span>agent <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    self<span class="token punctuation">.</span>agent <span class="token operator">=</span> self<span class="token punctuation">.</span>agent <span class="token operator">||</span> self<span class="token punctuation">.</span><span class="token function">getNewAgent</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过源码可以看到，要使用node创建一个长连接的http请求，有三种方式：</p>
+<ol>
+<li>直接塞给options已给 agent。</li>
+<li>给options一个agentClass</li>
+<li>options.forever的值设置为true</li>
+</ol>
+<p>但是，如果追踪代码的话，最后发现，基本上都是去new 一个 Agent，这里的pool，其实就是globalPool，</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">var</span> globalPool <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>
+
+<span class="token function">debug</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>self<span class="token punctuation">.</span>pool <span class="token operator">&amp;&amp;</span> self<span class="token punctuation">.</span>pool <span class="token operator">!==</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    self<span class="token punctuation">.</span>pool <span class="token operator">=</span> globalPool
+  <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>那么，看看Agent的源码：他在node的<a target="_blank" rel="noopener" href="https://github.com/nodejs/node/blob/v17.0.0/lib/_http_client.js">http模块</a>中 </p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">Agent</span><span class="token punctuation">(</span><span class="token parameter">options</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span><span class="token keyword">this</span> <span class="token keyword">instanceof</span> <span class="token class-name">Agent</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Agent</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">FunctionPrototypeCall</span><span class="token punctuation">(</span>EventEmitter<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>defaultPort <span class="token operator">=</span> <span class="token number">80</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>protocol <span class="token operator">=</span> <span class="token string">'http:'</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>options <span class="token operator">=</span> <span class="token punctuation">&#123;</span> __proto__<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token operator">...</span>options <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Don't confuse net and make it think that we're connecting to a pipe</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span>path <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>requests <span class="token operator">=</span> <span class="token function">ObjectCreate</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>sockets <span class="token operator">=</span> <span class="token function">ObjectCreate</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>freeSockets <span class="token operator">=</span> <span class="token function">ObjectCreate</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>keepAliveMsecs <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span>keepAliveMsecs <span class="token operator">||</span> <span class="token number">1000</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>keepAlive <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span>keepAlive <span class="token operator">||</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>maxSockets <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span>maxSockets <span class="token operator">||</span> Agent<span class="token punctuation">.</span>defaultMaxSockets<span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>maxFreeSockets <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span>maxFreeSockets <span class="token operator">||</span> <span class="token number">256</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>scheduling <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span>scheduling <span class="token operator">||</span> <span class="token string">'lifo'</span><span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>options<span class="token punctuation">.</span>maxTotalSockets<span class="token punctuation">;</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>totalSocketCount <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+  <span class="token function">validateOneOf</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>scheduling<span class="token punctuation">,</span> <span class="token string">'scheduling'</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">'fifo'</span><span class="token punctuation">,</span> <span class="token string">'lifo'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets <span class="token operator">!==</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">validateNumber</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets<span class="token punctuation">,</span> <span class="token string">'maxTotalSockets'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token operator">||</span> <span class="token function">NumberIsNaN</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets<span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ERR_OUT_OF_RANGE</span><span class="token punctuation">(</span><span class="token string">'maxTotalSockets'</span><span class="token punctuation">,</span> <span class="token string">'> 0'</span><span class="token punctuation">,</span>
+                                 <span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets <span class="token operator">=</span> <span class="token number">Infinity</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'free'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">socket<span class="token punctuation">,</span> options</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">const</span> name <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getName</span><span class="token punctuation">(</span>options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">'agent.on(free)'</span><span class="token punctuation">,</span> name<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// TODO(ronag): socket.destroy(err) might have been called</span>
+    <span class="token comment">// before coming here and have an 'error' scheduled. In the</span>
+    <span class="token comment">// case of socket.destroy() below this 'error' has no handler</span>
+    <span class="token comment">// and could cause unhandled exception.</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>socket<span class="token punctuation">.</span>writable<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      socket<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">const</span> requests <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>requests<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>requests <span class="token operator">&amp;&amp;</span> requests<span class="token punctuation">.</span>length<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> req <span class="token operator">=</span> <span class="token function">ArrayPrototypeShift</span><span class="token punctuation">(</span>requests<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> reqAsyncRes <span class="token operator">=</span> req<span class="token punctuation">[</span>kRequestAsyncResource<span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>reqAsyncRes<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// Run request within the original async context.</span>
+        reqAsyncRes<span class="token punctuation">.</span><span class="token function">runInAsyncScope</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+          <span class="token function">asyncResetHandle</span><span class="token punctuation">(</span>socket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token function">setRequestSocket</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> req<span class="token punctuation">,</span> socket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        req<span class="token punctuation">[</span>kRequestAsyncResource<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">setRequestSocket</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> req<span class="token punctuation">,</span> socket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>requests<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">delete</span> <span class="token keyword">this</span><span class="token punctuation">.</span>requests<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token comment">// If there are no pending requests, then put it in</span>
+    <span class="token comment">// the freeSockets pool, but only if we're allowed to do so.</span>
+    <span class="token keyword">const</span> req <span class="token operator">=</span> socket<span class="token punctuation">.</span>_httpMessage<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>req <span class="token operator">||</span> <span class="token operator">!</span>req<span class="token punctuation">.</span>shouldKeepAlive <span class="token operator">||</span> <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>keepAlive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      socket<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">const</span> freeSockets <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>freeSockets<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> freeLen <span class="token operator">=</span> freeSockets<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+    <span class="token keyword">let</span> count <span class="token operator">=</span> freeLen<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>sockets<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">)</span>
+      count <span class="token operator">+=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>sockets<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>totalSocketCount <span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>maxTotalSockets <span class="token operator">||</span>
+        count <span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>maxSockets <span class="token operator">||</span>
+        freeLen <span class="token operator">>=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>maxFreeSockets <span class="token operator">||</span>
+        <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">keepSocketAlive</span><span class="token punctuation">(</span>socket<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      socket<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span>freeSockets<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> freeSockets<span class="token punctuation">;</span>
+    socket<span class="token punctuation">[</span>async_id_symbol<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+    socket<span class="token punctuation">.</span>_httpMessage <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">removeSocket</span><span class="token punctuation">(</span>socket<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    socket<span class="token punctuation">.</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> freeSocketErrorListener<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">ArrayPrototypePush</span><span class="token punctuation">(</span>freeSockets<span class="token punctuation">,</span> socket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// Don't emit keylog events unless there is a listener for them.</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'newListener'</span><span class="token punctuation">,</span> maybeEnableKeylog<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意这句话</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"> <span class="token comment">// If there are no pending requests, then put it in</span>
+    <span class="token comment">// the freeSockets pool, but only if we're allowed to do so.</span>
+<span class="token keyword">const</span> req <span class="token operator">=</span> socket<span class="token punctuation">.</span>_httpMessage<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>req <span class="token operator">||</span> <span class="token operator">!</span>req<span class="token punctuation">.</span>shouldKeepAlive <span class="token operator">||</span> <span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>keepAlive<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      socket<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">return</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果不是keepAlive的，一个请求结束，这个socket将果断断开，但其实还有一个条件，那就是，已经没有等待要处理的请求了，也是直接断开，避免浪费内存。</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">tickOnSocket</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> socket</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> parser <span class="token operator">=</span> parsers<span class="token punctuation">.</span><span class="token function">alloc</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  req<span class="token punctuation">.</span>socket <span class="token operator">=</span> socket<span class="token punctuation">;</span>
+  <span class="token keyword">const</span> lenient <span class="token operator">=</span> req<span class="token punctuation">.</span>insecureHTTPParser <span class="token operator">===</span> <span class="token keyword">undefined</span> <span class="token operator">?</span>
+    <span class="token function">isLenient</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> req<span class="token punctuation">.</span>insecureHTTPParser<span class="token punctuation">;</span>
+  parser<span class="token punctuation">.</span><span class="token function">initialize</span><span class="token punctuation">(</span>HTTPParser<span class="token punctuation">.</span><span class="token constant">RESPONSE</span><span class="token punctuation">,</span>
+                    <span class="token keyword">new</span> <span class="token class-name">HTTPClientAsyncResource</span><span class="token punctuation">(</span><span class="token string">'HTTPINCOMINGMESSAGE'</span><span class="token punctuation">,</span> req<span class="token punctuation">)</span><span class="token punctuation">,</span>
+                    req<span class="token punctuation">.</span>maxHeaderSize <span class="token operator">||</span> <span class="token number">0</span><span class="token punctuation">,</span>
+                    lenient <span class="token operator">?</span> kLenientAll <span class="token operator">:</span> kLenientNone<span class="token punctuation">,</span>
+                    <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  parser<span class="token punctuation">.</span>socket <span class="token operator">=</span> socket<span class="token punctuation">;</span>
+  parser<span class="token punctuation">.</span>outgoing <span class="token operator">=</span> req<span class="token punctuation">;</span>
+  req<span class="token punctuation">.</span>parser <span class="token operator">=</span> parser<span class="token punctuation">;</span>
+
+  socket<span class="token punctuation">.</span>parser <span class="token operator">=</span> parser<span class="token punctuation">;</span>
+  socket<span class="token punctuation">.</span>_httpMessage <span class="token operator">=</span> req<span class="token punctuation">;</span><span class="token comment">//是在这赋值的。</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token class-name">ClientRequest</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">onSocket</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">onSocket</span><span class="token punctuation">(</span><span class="token parameter">socket<span class="token punctuation">,</span> err</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">// TODO(ronag): Between here and onSocketNT the socket</span>
+  <span class="token comment">// has no 'error' handler.</span>
+  process<span class="token punctuation">.</span><span class="token function">nextTick</span><span class="token punctuation">(</span>onSocketNT<span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">,</span> socket<span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">onSocketNT</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> socket<span class="token punctuation">,</span> err</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>req<span class="token punctuation">.</span>destroyed <span class="token operator">||</span> err<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    req<span class="token punctuation">.</span>destroyed <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">function</span> <span class="token function">_destroy</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> err</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>req<span class="token punctuation">.</span>aborted <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>err<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        err <span class="token operator">=</span> <span class="token function">connResetException</span><span class="token punctuation">(</span><span class="token string">'socket hang up'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        req<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      req<span class="token punctuation">.</span>_closed <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      req<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">'close'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>socket<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>err <span class="token operator">&amp;&amp;</span> req<span class="token punctuation">.</span>agent <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>socket<span class="token punctuation">.</span>destroyed<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        socket<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">'free'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">finished</span><span class="token punctuation">(</span>socket<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span>err <span class="token operator">||</span> req<span class="token punctuation">[</span>kError<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">er</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>er<span class="token operator">?.</span>code <span class="token operator">===</span> <span class="token string">'ERR_STREAM_PREMATURE_CLOSE'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            er <span class="token operator">=</span> <span class="token keyword">null</span><span class="token punctuation">;</span>
+          <span class="token punctuation">&#125;</span>
+          <span class="token function">_destroy</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> er <span class="token operator">||</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token function">_destroy</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> err <span class="token operator">||</span> req<span class="token punctuation">[</span>kError<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">tickOnSocket</span><span class="token punctuation">(</span>req<span class="token punctuation">,</span> socket<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    req<span class="token punctuation">.</span><span class="token function">_flush</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是底层Socket的setKeepAlive，</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token class-name">Socket</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">setKeepAlive</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token parameter">setting<span class="token punctuation">,</span> msecs</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>_handle<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token string">'connect'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setKeepAlive</span><span class="token punctuation">(</span>setting<span class="token punctuation">,</span> msecs<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>_handle<span class="token punctuation">.</span>setKeepAlive<span class="token punctuation">)</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>_handle<span class="token punctuation">.</span><span class="token function">setKeepAlive</span><span class="token punctuation">(</span>setting<span class="token punctuation">,</span> <span class="token operator">~</span><span class="token operator">~</span><span class="token punctuation">(</span>msecs <span class="token operator">/</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个是SetKeepAlive的底层C++代码</p>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void TCPWrap::SetKeepAlive(const FunctionCallbackInfo&lt;Value&gt;&amp; args) &#123;
+  TCPWrap* wrap;
+  ASSIGN_OR_RETURN_UNWRAP(&amp;wrap,
+                          args.Holder(),
+                          args.GetReturnValue().Set(UV_EBADF));
+  Environment* env &#x3D; wrap-&gt;env();
+  int enable;
+  if (!args[0]-&gt;Int32Value(env-&gt;context()).To(&amp;enable)) return;
+  unsigned int delay &#x3D; static_cast&lt;unsigned int&gt;(args[1].As&lt;Uint32&gt;()-&gt;Value());
+  int err &#x3D; uv_tcp_keepalive(&amp;wrap-&gt;handle_, enable, delay);
+  args.GetReturnValue().Set(err);
+&#125;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">void TCPWrap::Initialize(Local&lt;Object&gt; target,
+                         Local&lt;Value&gt; unused,
+                         Local&lt;Context&gt; context,
+                         void* priv) &#123;
+  Environment* env &#x3D; Environment::GetCurrent(context);
+
+  Local&lt;FunctionTemplate&gt; t &#x3D; env-&gt;NewFunctionTemplate(New);
+  t-&gt;InstanceTemplate()-&gt;SetInternalFieldCount(StreamBase::kInternalFieldCount);
+
+  &#x2F;&#x2F; Init properties
+  t-&gt;InstanceTemplate()-&gt;Set(FIXED_ONE_BYTE_STRING(env-&gt;isolate(), &quot;reading&quot;),
+                             Boolean::New(env-&gt;isolate(), false));
+  t-&gt;InstanceTemplate()-&gt;Set(env-&gt;owner_symbol(), Null(env-&gt;isolate()));
+  t-&gt;InstanceTemplate()-&gt;Set(env-&gt;onconnection_string(), Null(env-&gt;isolate()));
+
+  t-&gt;Inherit(LibuvStreamWrap::GetConstructorTemplate(env));
+
+  env-&gt;SetProtoMethod(t, &quot;open&quot;, Open);
+  env-&gt;SetProtoMethod(t, &quot;bind&quot;, Bind);
+  env-&gt;SetProtoMethod(t, &quot;listen&quot;, Listen);
+  env-&gt;SetProtoMethod(t, &quot;connect&quot;, Connect);
+  env-&gt;SetProtoMethod(t, &quot;bind6&quot;, Bind6);
+  env-&gt;SetProtoMethod(t, &quot;connect6&quot;, Connect6);
+  env-&gt;SetProtoMethod(t, &quot;getsockname&quot;,
+                      GetSockOrPeerName&lt;TCPWrap, uv_tcp_getsockname&gt;);
+  env-&gt;SetProtoMethod(t, &quot;getpeername&quot;,
+                      GetSockOrPeerName&lt;TCPWrap, uv_tcp_getpeername&gt;);
+  env-&gt;SetProtoMethod(t, &quot;setNoDelay&quot;, SetNoDelay);
+  env-&gt;SetProtoMethod(t, &quot;setKeepAlive&quot;, SetKeepAlive);&#x2F;&#x2F;这里注册<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">
+In the <span class="token keyword">case</span> <span class="token keyword">of</span> a premature connection close before the response is received<span class="token punctuation">,</span>
+the following events will be emitted <span class="token keyword">in</span> the following order<span class="token operator">:</span>
+
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'socket'</span><span class="token template-punctuation string">`</span></span>
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'error'</span><span class="token template-punctuation string">`</span></span> <span class="token keyword">with</span> an error <span class="token keyword">with</span> message <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'Error: socket hang up'</span><span class="token template-punctuation string">`</span></span> and code
+  <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'ECONNRESET'</span><span class="token template-punctuation string">`</span></span>
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'close'</span><span class="token template-punctuation string">`</span></span>
+
+If <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">req.destroy()</span><span class="token template-punctuation string">`</span></span> is called before a socket is assigned<span class="token punctuation">,</span> the following
+events will be emitted <span class="token keyword">in</span> the following order<span class="token operator">:</span>
+
+<span class="token operator">*</span> <span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">req.destroy()</span><span class="token template-punctuation string">`</span></span> called here<span class="token punctuation">)</span>
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'error'</span><span class="token template-punctuation string">`</span></span> <span class="token keyword">with</span> an error <span class="token keyword">with</span> message <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'Error: socket hang up'</span><span class="token template-punctuation string">`</span></span> and code
+  <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'ECONNRESET'</span><span class="token template-punctuation string">`</span></span>
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'close'</span><span class="token template-punctuation string">`</span></span>
+
+If <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">req.destroy()</span><span class="token template-punctuation string">`</span></span> is called before the connection succeeds<span class="token punctuation">,</span> the following
+events will be emitted <span class="token keyword">in</span> the following order<span class="token operator">:</span>
+
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'socket'</span><span class="token template-punctuation string">`</span></span>
+<span class="token operator">*</span> <span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">req.destroy()</span><span class="token template-punctuation string">`</span></span> called here<span class="token punctuation">)</span>
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'error'</span><span class="token template-punctuation string">`</span></span> <span class="token keyword">with</span> an error <span class="token keyword">with</span> message <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'Error: socket hang up'</span><span class="token template-punctuation string">`</span></span> and code
+  <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'ECONNRESET'</span><span class="token template-punctuation string">`</span></span>
+<span class="token operator">*</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">'close'</span><span class="token template-punctuation string">`</span></span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>dns解析</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">lookupAndListen</span><span class="token punctuation">(</span><span class="token parameter">self<span class="token punctuation">,</span> port<span class="token punctuation">,</span> address<span class="token punctuation">,</span> backlog<span class="token punctuation">,</span> exclusive<span class="token punctuation">,</span> flags</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>dns <span class="token operator">===</span> <span class="token keyword">undefined</span><span class="token punctuation">)</span> dns <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'dns'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  dns<span class="token punctuation">.</span><span class="token function">lookup</span><span class="token punctuation">(</span>address<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token function">doListen</span><span class="token punctuation">(</span><span class="token parameter">err<span class="token punctuation">,</span> ip<span class="token punctuation">,</span> addressType</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      self<span class="token punctuation">.</span><span class="token function">emit</span><span class="token punctuation">(</span><span class="token string">'error'</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+      addressType <span class="token operator">=</span> ip <span class="token operator">?</span> addressType <span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">;</span>
+      <span class="token function">listenInCluster</span><span class="token punctuation">(</span>self<span class="token punctuation">,</span> ip<span class="token punctuation">,</span> port<span class="token punctuation">,</span> addressType<span class="token punctuation">,</span>
+                      backlog<span class="token punctuation">,</span> <span class="token keyword">undefined</span><span class="token punctuation">,</span> exclusive<span class="token punctuation">,</span> flags<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>创建socket，是管道，或者 tcp</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">createHandle</span><span class="token punctuation">(</span><span class="token parameter">fd<span class="token punctuation">,</span> is_server</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">validateInt32</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> <span class="token string">'fd'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">const</span> type <span class="token operator">=</span> <span class="token function">guessHandleType</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'PIPE'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Pipe</span><span class="token punctuation">(</span>
+      is_server <span class="token operator">?</span> PipeConstants<span class="token punctuation">.</span><span class="token constant">SERVER</span> <span class="token operator">:</span> PipeConstants<span class="token punctuation">.</span><span class="token constant">SOCKET</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>type <span class="token operator">===</span> <span class="token string">'TCP'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">TCP</span><span class="token punctuation">(</span>
+      is_server <span class="token operator">?</span> TCPConstants<span class="token punctuation">.</span><span class="token constant">SERVER</span> <span class="token operator">:</span> TCPConstants<span class="token punctuation">.</span><span class="token constant">SOCKET</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">ERR_INVALID_FD_TYPE</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>老外的测试用例</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token function">tape</span><span class="token punctuation">(</span><span class="token string">'keepAlive is timed'</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">t</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">var</span> agent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">http<span class="token punctuation">.</span>Agent</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span> keepAlive<span class="token operator">:</span> <span class="token boolean">true</span> <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token keyword">var</span> options <span class="token operator">=</span> <span class="token punctuation">&#123;</span> time<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> agent<span class="token operator">:</span> agent <span class="token punctuation">&#125;</span>
+  <span class="token keyword">var</span> start1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+  <span class="token function">request</span><span class="token punctuation">(</span><span class="token string">'http://localhost:'</span> <span class="token operator">+</span> plainServer<span class="token punctuation">.</span>port <span class="token operator">+</span> <span class="token string">'/'</span><span class="token punctuation">,</span> options<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err1<span class="token punctuation">,</span> res1<span class="token punctuation">,</span> body1</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> end1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// ensure the first request's timestamps look ok</span>
+    t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res1<span class="token punctuation">.</span>timingStart <span class="token operator">>=</span> start1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>start1 <span class="token operator">&lt;=</span> end1<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+
+    t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res1<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>socket <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res1<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>lookup <span class="token operator">>=</span> res1<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>socket<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res1<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>connect <span class="token operator">>=</span> res1<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>lookup<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+    t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res1<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>response <span class="token operator">>=</span> res1<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>connect<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+
+    <span class="token comment">// open a second request with the same agent so we re-use the same connection</span>
+    <span class="token keyword">var</span> start2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">request</span><span class="token punctuation">(</span><span class="token string">'http://localhost:'</span> <span class="token operator">+</span> plainServer<span class="token punctuation">.</span>port <span class="token operator">+</span> <span class="token string">'/'</span><span class="token punctuation">,</span> options<span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">err2<span class="token punctuation">,</span> res2<span class="token punctuation">,</span> body2</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">var</span> end2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">getTime</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+      <span class="token comment">// ensure the second request's timestamps look ok</span>
+      t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res2<span class="token punctuation">.</span>timingStart <span class="token operator">>=</span> start2<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+      t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>start2 <span class="token operator">&lt;=</span> end2<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+
+      <span class="token comment">// ensure socket==lookup==connect for the second request</span>
+      t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res2<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>socket <span class="token operator">>=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+      t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res2<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>lookup <span class="token operator">===</span> res2<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>socket<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+      t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res2<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>connect <span class="token operator">===</span> res2<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>lookup<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+      t<span class="token punctuation">.</span><span class="token function">equal</span><span class="token punctuation">(</span><span class="token punctuation">(</span>res2<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>response <span class="token operator">>=</span> res2<span class="token punctuation">.</span>timings<span class="token punctuation">.</span>connect<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span>
+
+      <span class="token comment">// explicitly shut down the agent</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> agent<span class="token punctuation">.</span>destroy <span class="token operator">===</span> <span class="token string">'function'</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        agent<span class="token punctuation">.</span><span class="token function">destroy</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// node &lt; 0.12</span>
+        Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>agent<span class="token punctuation">.</span>sockets<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          agent<span class="token punctuation">.</span>sockets<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token parameter">socket</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            socket<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+          <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+      <span class="token punctuation">&#125;</span>
+
+      t<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="hz">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="心随我动">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/" class="post-title-link" itemprop="url">我解决了Vscode中vue方法跳转的难题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2022-02-01 13:31:25 / 修改时间：13:53:37" itemprop="dateCreated datePublished" datetime="2022-02-01T13:31:25+08:00">2022-02-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="第一步-创建项目"><a href="#第一步-创建项目" class="headerlink" title="第一步 创建项目"></a>第一步 创建项目</h4><pre class="line-numbers language-shell" data-language="shell"><code class="language-shell">yo code mp-sign-vscode-extension<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>根据<a target="_blank" rel="noopener" href="https://code.visualstudio.com/api/language-extensions/programmatic-language-features">vscode官网</a>描述 ，要实现一个GoDefinition的插件，需要做以下两个步骤；</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131104418874.png" alt></p>
+<h4 id="第一步，我们要在语言服务中申明支持-defintionProvider"><a href="#第一步，我们要在语言服务中申明支持-defintionProvider" class="headerlink" title="第一步，我们要在语言服务中申明支持 defintionProvider"></a>第一步，我们要在语言服务中申明支持 defintionProvider</h4><p>这样才可以在在插件加载之后出现</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131104623771.png" alt></p>
+<p>转到定义之类的菜单，但我们这里不这么做，因为，根据官网描述，这个只需要被任何一个插件申明一次即可，因为我们的项目mp-sign是一个vue项目，然后大家肯定是安装了<a target="_blank" rel="noopener" href="https://github.com/vuejs/vetur">vetur</a>这个大名鼎鼎的插件的，可以在源码中看到，</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131105203998.png" alt="image-20220131105203998"></p>
+<p>上述申明这个插件做过，因此我们可以直接略过这一步；所以我们进入第二步，实现一个<code>vscode.DefinitionProvider</code>。</p>
+<h4 id="第二步-实现vscode-DefinitionProvider"><a href="#第二步-实现vscode-DefinitionProvider" class="headerlink" title="第二步 实现vscode.DefinitionProvider"></a>第二步 实现<code>vscode.DefinitionProvider</code></h4><p>根据官网描述，我们要定义个自定义跳转的插件，需要实现一个  vscode.DefinitionProvider，其原理就是写一个方法实现，定位到源码位置vscode.Location;其原理就是，当我们按住【mac上是command建|windows上是CTRL键】+ 鼠标左键，vscode语言服务就会将当前鼠标位置捕捉到的相关信息传递到给我们这个插件，这些信息丢给vscode.DefinitionProvider 具体实现的 <code>provideDefinition</code>这个回调处理。</p>
+<p>然后根据我们mp-sign项目的特点，我们主要是解决 mixin和vuex方法定位比较难的问题。同时在实践中发现vue methods块中的方法调用也无法自动跳转，定位代码也挺烦的，因此，直接把三种方式跳转定义全部实现了；</p>
+<p>我们要实现的大体框架如下所示。</p>
+<pre class="line-numbers language-typescript" data-language="typescript"><code class="language-typescript"><span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> vscode <span class="token keyword">from</span> <span class="token string">"vscode"</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token operator">*</span> <span class="token keyword">as</span> path <span class="token keyword">from</span> <span class="token string">"path"</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">class</span> <span class="token class-name">MpDefinitionProvider</span> <span class="token keyword">implements</span> <span class="token class-name">vscode</span><span class="token punctuation">.</span>DefinitionProvider <span class="token punctuation">&#123;</span>
+  <span class="token function">provideDefinition</span><span class="token punctuation">(</span>
+    document<span class="token operator">:</span> vscode<span class="token punctuation">.</span>TextDocument<span class="token punctuation">,</span>
+    position<span class="token operator">:</span> vscode<span class="token punctuation">.</span>Position<span class="token punctuation">,</span>
+    token<span class="token operator">:</span> vscode<span class="token punctuation">.</span>CancellationToken
+  <span class="token punctuation">)</span><span class="token operator">:</span> vscode<span class="token punctuation">.</span>ProviderResult<span class="token operator">&lt;</span>vscode<span class="token punctuation">.</span>Definition <span class="token operator">|</span> vscode<span class="token punctuation">.</span>LocationLink<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token operator">></span> <span class="token punctuation">&#123;</span>
+   
+    <span class="token keyword">const</span> location<span class="token operator">:</span>vscode<span class="token punctuation">.</span>Location <span class="token operator">=</span> <span class="token function">vueMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token function">mixinMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token function">vuexActionOrMutations</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span>
+		
+    <span class="token keyword">return</span> <span class="token builtin">Promise</span><span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>
+      location
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token comment">// 是vue的内联方法</span>
+<span class="token keyword">function</span> <span class="token function">vueMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token comment">//TODO </span>
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Location</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 是 mixin 方法</span>
+<span class="token keyword">function</span> <span class="token function">mixinMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+   <span class="token comment">//TODO</span>
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">location</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token comment">// 是 Vuex 的action</span>
+<span class="token keyword">function</span> <span class="token function">vuexActionOrMutations</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+   <span class="token comment">//TODO</span>
+  <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">location</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">||</span><span class="token keyword">null</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意看看provideDefinition这个方法，他入参有2个比较重要<code>document vs position</code>，document有一个属性是uri，这个可以方便我们拿到当前文件的path，position，顾名思义，就是当前鼠标悬停的位置，可以方便我们拿到鼠标悬停的字符串是个啥。</p>
+<p>第一个是来处理vueMethods，那么确定目前想要跳转的方法是否是本文件中的methods中的方法，我们需要解析这个vue文件，并且把里面的方法都遍历出来，然后来匹配一下，如果可以匹配到，那说明，改方法就在本文件中对吧。说干就干，解析vue文件搞起，使用 @vue/compiler-dom  的 <code>parse</code>方法。</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131142018464.png" alt="image-20220131142018464"></p>
+<p>可以看到拿到的结构中children中有三块，template/script/styles，这块内容你可以去<a target="_blank" rel="noopener" href="https://astexplorer.net/">这个网站</a>上看，选择vue就 可以看到，注意一下这里。<strong>每个块中都有一个 loc属性，他的起始位置都有明确的告知，我们这里需要记住一下template文件的end行数</strong>，后面返回vscode.Location时我们需要用到这个偏移量。</p>
+<p>通过script模块中的source字段，我们拿到该vue文件中的script块的内容，通过babel 的parse 就可以拿到语法树 AST（一点都不神秘），就可以很方便的找到里面的methods模块中的各个方法了，拿到这些模块，一一匹配，就可以确定方法是否在改文件内的，如果确定在文件内，就可以通过AST返回的loc信息明确这个定义方法在<code>&lt;script&gt;</code>块中位置了，主要是行数和列偏移。</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220131124523710.png" alt="image-20220131124523710"></p>
+<p>上面这幅图可以拿到methods块，即name为methods的ObjectProperty结点，一个find方法轻松找到，同样的道理去找这个结点下面的value中的具体的我们要找的method，所以，第一个实现 vue methods的跳转定位就和么被实现了。</p>
+<p>我们先看看实现效果</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/gotoMethod.gif" alt="gotoMethod"></p>
+<h4 id="第三步-继续实现-mixin方法跳转-和-vuex-action-跳转"><a href="#第三步-继续实现-mixin方法跳转-和-vuex-action-跳转" class="headerlink" title="第三步 继续实现 mixin方法跳转 和 vuex action 跳转"></a>第三步 继续实现 mixin方法跳转 和 vuex action 跳转</h4><p>大家都知道在vue中引入mixin之后，代码定位复杂度就加大了，一个主要原因是这个方法不在这个vue文件里面，所以，如何实现呢？</p>
+<p>1、经过前面的methods环节的判断，没有找到，就进入了mixin处理块中，这里的逻辑是，找到vue中import的所有的 mixin文件，然后通过babel parse出语法树，按照上面的套路，解析出method的位置，然后生成  vscode.Location返回。</p>
+<p>2、同样的道理，vuex action的方式类似，我们这里之定位  this.$u.vuex(‘Module/action’)这类的调用 ，首先通过 document和position两个参数拿到 Module/action ，然后分别解析出 module和action ，module方便我们找到import的是按个文件，action可以通过上述ast解析的方式帮我们定位到具体方法，最后同样返回 vscode.Location。</p>
+<p>让我们来看看mixin文件跳转效果以及vuex 之 action 跳转的效果</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/mixin.gif" alt="mixin"></p>
+<h4 id="第四步-打包"><a href="#第四步-打包" class="headerlink" title="第四步 打包"></a>第四步 打包</h4><p><code>vsce package</code></p>
+<p>即可，注意node版本要在14以上，不然这个命令会执行失败，另外，如何打包之后发现插件加载失败，可以在这里看日志定位问题</p>
+<p><img src="/2022/02/01/%E6%88%91%E8%A7%A3%E5%86%B3%E4%BA%86vscode%E4%B8%ADvue%E6%96%B9%E6%B3%95%E8%B7%B3%E8%BD%AC%E7%9A%84%E9%9A%BE%E9%A2%98/image-20220201135331741.png" alt="image-20220201135331741"></p>
+<p>我就碰到过，发现是以为自己安装的npm包babel以及vue解析是放在 devDependencies下的，实际上是需要放到dependencies下面，移动下重新yarn解决。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>研发这个插件的目的就是为了解决自己项目中遇到的方法无法跳转到定义的问题，在有这个思路到具体实现出来总共话了2天时间，其中大部分的时间都放在了研究怎么实现一款自定义插件上，主要还是参考官网，期间了解到了不少概念，比如lsp，还被这个坑过，以为实现一个gotoDefinition插件需要做一个服务端，其实后面发现不需要的，官网上其实说的不怎么详细，还是自己从github上参考了别人写的一个gotoDefinition中得出的结论，我这里不下看到8个github上关于插件的实现。</p>
+<p>document和position的用法也是从一个项目那里了解到的，具体那个忘记记录了，总之这个不重要了，重要的是，你的目标是什么，要达到这个目标你需要准备些什么知识or工具，做这个插件最大的收获是：</p>
+<p>1、学习到了github上几个优秀的插件的实现，顺带也关注了一下几个大佬的博客。</p>
+<p>2、知道了vscode gotoDefinition 的原理，后面碰到不能跳转至少知道背后的原因是啥。</p>
+<p>3、Google不一定可以帮你解决所有问题，当解决不了的时候，记得github搜索，我就是通过搜索某些api了解到其他人怎么实现的，关于插件研发Google确实能你的有限，学会使用其他渠道。</p>
 
       
     </div>

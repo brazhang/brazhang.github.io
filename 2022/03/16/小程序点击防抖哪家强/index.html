@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 5.4.0">
+<meta name="generator" content="Hexo 5.4.1">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
@@ -23,19 +23,19 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"blog.brzhang.club","root":"/","images":"/images","scheme":"Mist","darkmode":false,"version":"8.7.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":true,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
-<meta name="description" content="背景从腾讯电子签在现网问题反馈中，我们发现中发现有部分用户吐槽一些按钮不小心快速多次点击出现出现多个类似的页面，处理完业务之后回退需要退两次。虽说对于业务流程来说没有影响，但是确实影响到用户体验，所以如何优雅且强制性规范的在小程序上做防重复点击是本文研究的重点。 分析腾讯电子签小程序基于uni-app研发，举个栗子，通常一处存在点击的处理事件长这个样子，见下面的@click。 &lt;templa">
+<meta name="description" content="背景从腾讯电子签在现网问题反馈中，我们发现中发现有部分用户吐槽一些按钮不小心快速多次点击出现出现多个类似的页面，处理完业务之后回退需要退两次。虽说对于业务流程来说没有影响，但是确实影响到用户体验，所以如何优雅且强制性规范的在小程序上做防重复点击是本文研究的重点。 分析腾讯电子签小程序基于 uni-app 研发，举个栗子，通常一处存在点击的处理事件长这个样子，见下面的@click。 &lt;temp">
 <meta property="og:type" content="article">
 <meta property="og:title" content="小程序点击防抖哪家强">
 <meta property="og:url" content="https://blog.brzhang.club/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/index.html">
 <meta property="og:site_name" content="心随我动">
-<meta property="og:description" content="背景从腾讯电子签在现网问题反馈中，我们发现中发现有部分用户吐槽一些按钮不小心快速多次点击出现出现多个类似的页面，处理完业务之后回退需要退两次。虽说对于业务流程来说没有影响，但是确实影响到用户体验，所以如何优雅且强制性规范的在小程序上做防重复点击是本文研究的重点。 分析腾讯电子签小程序基于uni-app研发，举个栗子，通常一处存在点击的处理事件长这个样子，见下面的@click。 &lt;templa">
+<meta property="og:description" content="背景从腾讯电子签在现网问题反馈中，我们发现中发现有部分用户吐槽一些按钮不小心快速多次点击出现出现多个类似的页面，处理完业务之后回退需要退两次。虽说对于业务流程来说没有影响，但是确实影响到用户体验，所以如何优雅且强制性规范的在小程序上做防重复点击是本文研究的重点。 分析腾讯电子签小程序基于 uni-app 研发，举个栗子，通常一处存在点击的处理事件长这个样子，见下面的@click。 &lt;temp">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://blog.brzhang.club/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316185014558.png">
 <meta property="og:image" content="https://blog.brzhang.club/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316190601141.png">
 <meta property="og:image" content="https://blog.brzhang.club/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316191301667.png">
 <meta property="og:image" content="https://blog.brzhang.club/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316191949544.png">
 <meta property="article:published_time" content="2022-03-16T09:28:20.000Z">
-<meta property="article:modified_time" content="2022-03-16T11:20:53.615Z">
+<meta property="article:modified_time" content="2022-03-27T10:43:11.257Z">
 <meta property="article:author" content="hz">
 <meta property="article:tag" content="default">
 <meta name="twitter:card" content="summary">
@@ -49,7 +49,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://blog.brzhang.club/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/","path":"2022/03/16/小程序点击防抖哪家强/","title":"小程序点击防抖哪家强"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>小程序点击防抖哪家强 | 心随我动</title>
+<title>小程序点击防抖哪家强 | 心随我动</title><meta name="robots" content="noindex">
   
 
 
@@ -150,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eslint%E6%8F%92%E4%BB%B6%E5%BC%80%E6%90%9E"><span class="nav-number">3.</span> <span class="nav-text">eslint插件开搞</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%BC%80%E5%8F%91%E5%87%86%E5%A4%87"><span class="nav-number">3.1.</span> <span class="nav-text">基本开发准备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.2.</span> <span class="nav-text">检测原理介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E6%95%88%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">实际效果</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#eslint-%E6%8F%92%E4%BB%B6%E5%BC%80%E6%90%9E"><span class="nav-number">3.</span> <span class="nav-text">eslint 插件开搞</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%BC%80%E5%8F%91%E5%87%86%E5%A4%87"><span class="nav-number">3.1.</span> <span class="nav-text">基本开发准备</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B%E5%8E%9F%E7%90%86%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.2.</span> <span class="nav-text">检测原理介绍</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%AE%9E%E9%99%85%E6%95%88%E6%9E%9C"><span class="nav-number">3.3.</span> <span class="nav-text">实际效果</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -163,7 +163,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">26</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -244,10 +244,16 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-03-16 17:28:20 / 修改时间：19:20:53" itemprop="dateCreated datePublished" datetime="2022-03-16T17:28:20+08:00">2022-03-16</time>
+      <time title="创建时间：2022-03-16 17:28:20" itemprop="dateCreated datePublished" datetime="2022-03-16T17:28:20+08:00">2022-03-16</time>
     </span>
+      <span class="post-meta-item">
+        <span class="post-meta-item-icon">
+          <i class="far fa-calendar-check"></i>
+        </span>
+        <span class="post-meta-item-text">更新于</span>
+        <time title="修改时间：2022-03-27 18:43:11" itemprop="dateModified" datetime="2022-03-27T18:43:11+08:00">2022-03-27</time>
+      </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-folder"></i>
@@ -276,17 +282,14 @@
     
     <div class="post-body" itemprop="articleBody">
         <h4 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h4><p>从<strong>腾讯电子签</strong>在现网问题反馈中，我们发现中发现有部分用户吐槽一些按钮不小心快速多次点击出现出现多个类似的页面，处理完业务之后回退需要退两次。虽说对于业务流程来说没有影响，但是确实影响到用户体验，所以如何优雅且<strong>强制性</strong>规范的在小程序上做防重复点击是本文研究的重点。</p>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>腾讯电子签小程序基于uni-app研发，举个栗子，通常一处存在点击的处理事件长这个样子，见下面的@click。</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>腾讯电子签小程序基于 uni-app 研发，举个栗子，通常一处存在点击的处理事件长这个样子，见下面的@click。</p>
 <pre class="line-numbers language-vue" data-language="vue"><code class="language-vue">&lt;template&gt;
-   &lt;PdfItem
-       v-for&#x3D;&quot;(img, idx) in images&quot;
-       @click&#x3D;&quot;doSomeThing(idx)&quot;
-    &#x2F;&gt;
+  &lt;PdfItem v-for&#x3D;&quot;(img, idx) in images&quot; @click&#x3D;&quot;doSomeThing(idx)&quot; &#x2F;&gt;
 &lt;&#x2F;template&gt;
 &lt;script&gt;
 
 export default &#123;
- 
+
   data() &#123;
     return &#123;
       ...
@@ -298,14 +301,14 @@ export default &#123;
     &#125;,
   &#125;,
 &#125;;
-&lt;&#x2F;script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+&lt;&#x2F;script&gt;<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>那么，如何做好并消灭防重复点击就是本文要研究的点。拿上面的例子来说，大概有几个方式</p>
 <ol>
-<li><p>在doSomeThing中加一个变量，当做门卫，如果方法没处理完，再次进入直接返回，恩，每个方法都需要增加一段逻辑，去设置变量，比较繁琐。</p>
+<li><p>在 doSomeThing 中加一个变量，当做门卫，如果方法没处理完，再次进入直接返回，恩，每个方法都需要增加一段逻辑，去设置变量，比较繁琐。</p>
 <ol>
 <li><code>`</code>javascript<br>doSomeThing(){<br>  if(isDoing){<pre><code>return
 </code></pre>  }<br>  isDoing = true<br>  ….<br>  isDoing = false<br>}<pre class="line-numbers language-none"><code class="language-none">
-2. 给doSomeThing方法增加一个debounce包裹一下，恩，比第一种略好，更加简洁点。
+2. 给 doSomeThing 方法增加一个 debounce 包裹一下，恩，比第一种略好，更加简洁点。
 
    1. &#96;&#96;&#96;javascript
       doSomeThing:_.debounce(function()&#123;
@@ -314,18 +317,18 @@ export default &#123;
 </li>
 </ol>
 </li>
-<li><p>hook的方式hook住click方法，然后来做处理逻辑，无奈小程序也没有类似web的这种addEventListener，遂放弃。</p>
+<li><p>hook 的方式 hook 住 click 方法，然后来做处理逻辑，无奈小程序也没有类似 web 的这种 addEventListener，遂放弃。</p>
 </li>
 </ol>
 <p>找到一种好的解决方式不是难问题，难问题是：</p>
 <ol>
 <li>我们的业务代码中，已经出现了很多出没有增加防抖逻辑包裹的代码，难道线上遇到一个反馈，解决一个吗？</li>
-<li>如何限制后续编码过程中，大家写onclick代码的时候，强制加上onclick。</li>
+<li>如何限制后续编码过程中，大家写 onclick 代码的时候，强制加上 onclick。</li>
 </ol>
-<p>很显然，对于代码规范检测，我们非常容易想到使用eslint，但是现有的eslint有这么规则吗？自然是没有的，所以，我们遇到的问题在理论上转换为了：<strong>如何开发一款插件有效的检测onClick有没有使用防抖</strong>。</p>
-<h4 id="eslint插件开搞"><a href="#eslint插件开搞" class="headerlink" title="eslint插件开搞"></a>eslint插件开搞</h4><h5 id="基本开发准备"><a href="#基本开发准备" class="headerlink" title="基本开发准备"></a>基本开发准备</h5><p>插件开发的整体流程我就不在本文的介绍当中，本文只关心如何去实现检测的逻辑及基本的程序入口和调试技巧介绍。首先，我们要检测的文件是 .vue文件，因此，我们需要在eslint大环境下解析vue语法，那么使用什么方式解析vue语法，我们需要自己开发吗，显然不是，vue肯定是有的，比如<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-eslint-parser#readme">vue-eslint-parser</a>,想要更加直观的看解析效果，可以到<a target="_blank" rel="noopener" href="https://astexplorer.net/">astexplorer</a>贴上一段vue代码看看。</p>
+<p>很显然，对于代码规范检测，我们非常容易想到使用 eslint，但是现有的 eslint 有这么规则吗？自然是没有的，所以，我们遇到的问题在理论上转换为了：<strong>如何开发一款插件有效的检测 onClick 有没有使用防抖</strong>。</p>
+<h4 id="eslint-插件开搞"><a href="#eslint-插件开搞" class="headerlink" title="eslint 插件开搞"></a>eslint 插件开搞</h4><h5 id="基本开发准备"><a href="#基本开发准备" class="headerlink" title="基本开发准备"></a>基本开发准备</h5><p>插件开发的整体流程我就不在本文的介绍当中，本文只关心如何去实现检测的逻辑及基本的程序入口和调试技巧介绍。首先，我们要检测的文件是 .vue 文件，因此，我们需要在 eslint 大环境下解析 vue 语法，那么使用什么方式解析 vue 语法，我们需要自己开发吗，显然不是，vue 肯定是有的，比如<a target="_blank" rel="noopener" href="https://github.com/vuejs/vue-eslint-parser#readme">vue-eslint-parser</a>,想要更加直观的看解析效果，可以到<a target="_blank" rel="noopener" href="https://astexplorer.net/">astexplorer</a>贴上一段 vue 代码看看。</p>
 <p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316185014558.png" alt="image-20220316185014558"></p>
-<p>那么，我们就可以插件的开发框架下，模拟vue文件被这个插件解析，然后生成一个语法树抛给eslint插件入口，参见下面的代码块，解析好的语法数会已node参数传入到Program函数。</p>
+<p>那么，我们就可以插件的开发框架下，模拟 vue 文件被这个插件解析，然后生成一个语法树抛给 eslint 插件入口，参见下面的代码块，解析好的语法数会已 node 参数传入到 Program 函数。</p>
 <pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">/**
  * @fileoverview onClick should wrap with debounce in page
  * @author hoollyzhang
@@ -340,18 +343,18 @@ console<span class="token punctuation">.</span><span class="token function">log<
  * @type &#123;import('eslint').Rule.RuleModule&#125;
  */</span>
 module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
-  meta<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-    type<span class="token operator">:</span> <span class="token string">'problem'</span><span class="token punctuation">,</span> <span class="token comment">// `problem`, `suggestion`, or `layout`</span>
-    docs<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      description<span class="token operator">:</span> <span class="token string">'onClick should wrap with debounce in page'</span><span class="token punctuation">,</span>
-      category<span class="token operator">:</span> <span class="token string">'Possible Problems'</span><span class="token punctuation">,</span>
-      recommended<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-      url<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token comment">// URL to the documentation page for this rule</span>
+  <span class="token literal-property property">meta</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+    <span class="token literal-property property">type</span><span class="token operator">:</span> <span class="token string">'problem'</span><span class="token punctuation">,</span> <span class="token comment">// `problem`, `suggestion`, or `layout`</span>
+    <span class="token literal-property property">docs</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">description</span><span class="token operator">:</span> <span class="token string">'onClick should wrap with debounce in page'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">category</span><span class="token operator">:</span> <span class="token string">'Possible Problems'</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">recommended</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">url</span><span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token comment">// URL to the documentation page for this rule</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
-    schema<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// Add a schema if the rule has options</span>
-    messages<span class="token operator">:</span> <span class="token punctuation">&#123;</span>
-      missingAddDebounceClick<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">onClick method should wrap with debounce, use "import &#123; debounce &#125; from '@/utils/custom-lodash'" and wrap with it in the page.</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
-      shouldNotUseEmitThisWay<span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">It is suggested to use the debounce method of wrapping</span><span class="token template-punctuation string">`</span></span>
+    <span class="token literal-property property">schema</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token comment">// Add a schema if the rule has options</span>
+    <span class="token literal-property property">messages</span><span class="token operator">:</span> <span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">missingAddDebounceClick</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">onClick method should wrap with debounce, use "import &#123; debounce &#125; from '@/utils/custom-lodash'" and wrap with it in the page.</span><span class="token template-punctuation string">`</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">shouldNotUseEmitThisWay</span><span class="token operator">:</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">It is suggested to use the debounce method of wrapping</span><span class="token template-punctuation string">`</span></span>
     <span class="token punctuation">&#125;</span>
   <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
 
@@ -361,7 +364,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
     <span class="token comment">//----------------------------------------------------------------------</span>
     <span class="token comment">// Helpers</span>
     <span class="token comment">//----------------------------------------------------------------------</span>
-   
+
     <span class="token comment">//----------------------------------------------------------------------</span>
     <span class="token comment">// Public</span>
     <span class="token comment">//----------------------------------------------------------------------</span>
@@ -375,7 +378,7 @@ module<span class="token punctuation">.</span>exports <span class="token operato
         <span class="token punctuation">&#125;</span>
         <span class="token comment">//...</span>
         <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> templateBody<span class="token punctuation">,</span>body <span class="token punctuation">&#125;</span> <span class="token operator">=</span> node
-      
+
         <span class="token punctuation">[</span><span class="token operator">...</span>methods<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">item</span><span class="token operator">=></span><span class="token function">reportError</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">)</span>
       <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
     <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
@@ -387,67 +390,68 @@ module<span class="token punctuation">.</span>exports <span class="token operato
  * @fileoverview Import subPackage config in page
  * @author hoollyzhang
  */</span>
- <span class="token string">'use strict'</span><span class="token punctuation">;</span>
+<span class="token string">"use strict"</span><span class="token punctuation">;</span>
 
- <span class="token comment">//------------------------------------------------------------------------------</span>
- <span class="token comment">// Requirements</span>
- <span class="token comment">//------------------------------------------------------------------------------</span>
+<span class="token comment">//------------------------------------------------------------------------------</span>
+<span class="token comment">// Requirements</span>
+<span class="token comment">//------------------------------------------------------------------------------</span>
 
- <span class="token keyword">const</span> rule <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'../../../lib/rules/check-on-click-debounce'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token keyword">const</span> <span class="token constant">VUE_ESLINT_PARSER</span> <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token constant">NODE_MODULES</span><span class="token punctuation">,</span> <span class="token string">'vue-eslint-parser'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- 
- <span class="token comment">//------------------------------------------------------------------------------</span>
- <span class="token comment">// Tests</span>
- <span class="token comment">//------------------------------------------------------------------------------</span>
+<span class="token keyword">const</span> rule <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"../../../lib/rules/check-on-click-debounce"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token constant">VUE_ESLINT_PARSER</span> <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>
+  __dirname<span class="token punctuation">,</span>
+  <span class="token constant">NODE_MODULES</span><span class="token punctuation">,</span>
+  <span class="token string">"vue-eslint-parser"</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
- <span class="token keyword">const</span> ruleTester <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RuleTester</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- ruleTester<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token string">'check-on-click-debounce'</span><span class="token punctuation">,</span> rule<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
-   valid<span class="token operator">:</span> <span class="token punctuation">[</span>
-     <span class="token string">'pages/vue-onclick-debounce/onclick-debounce-test-ok.vue'</span><span class="token punctuation">,</span>
-   <span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token parameter">filename</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-     code<span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'utf8'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-     filename<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span>
-     parser<span class="token operator">:</span> <span class="token constant">VUE_ESLINT_PARSER</span><span class="token punctuation">,</span>
-     parserOptions<span class="token punctuation">,</span>
-   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token comment">//------------------------------------------------------------------------------</span>
+<span class="token comment">// Tests</span>
+<span class="token comment">//------------------------------------------------------------------------------</span>
 
-   invalid<span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token string">'pages/vue-onclick-debounce/onclick-debounce-test-not-ok.vue'</span><span class="token punctuation">,</span>
-   <span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">filename</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
-     code<span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'utf8'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-     filename<span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span>
-     parser<span class="token operator">:</span> <span class="token constant">VUE_ESLINT_PARSER</span><span class="token punctuation">,</span>
-     parserOptions<span class="token punctuation">,</span>
-     errors<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span> messageId<span class="token operator">:</span> <span class="token string">'missingAddDebounceClick'</span> <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-   <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
- <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>所以，我们可以使用这个验证我们研发的eslint插件是否符合预期，而且调试起来也比较方便，在vscode上开发的话，配置一个启动项即可，比如我配置了一个launch.json;</p>
+<span class="token keyword">const</span> ruleTester <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">RuleTester</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ruleTester<span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token string">"check-on-click-debounce"</span><span class="token punctuation">,</span> rule<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+  <span class="token literal-property property">valid</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"pages/vue-onclick-debounce/onclick-debounce-test-ok.vue"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>
+    <span class="token punctuation">(</span><span class="token parameter">filename</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">code</span><span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"utf8"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">filename</span><span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">parser</span><span class="token operator">:</span> <span class="token constant">VUE_ESLINT_PARSER</span><span class="token punctuation">,</span>
+      parserOptions<span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">,</span>
+
+  <span class="token literal-property property">invalid</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"pages/vue-onclick-debounce/onclick-debounce-test-not-ok.vue"</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>
+    <span class="token punctuation">(</span><span class="token parameter">filename</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+      <span class="token literal-property property">code</span><span class="token operator">:</span> fs<span class="token punctuation">.</span><span class="token function">readFileSync</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"utf8"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">filename</span><span class="token operator">:</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">TEST_INPUTS_DIR</span><span class="token punctuation">,</span> filename<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">parser</span><span class="token operator">:</span> <span class="token constant">VUE_ESLINT_PARSER</span><span class="token punctuation">,</span>
+      parserOptions<span class="token punctuation">,</span>
+      <span class="token literal-property property">errors</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">&#123;</span> <span class="token literal-property property">messageId</span><span class="token operator">:</span> <span class="token string">"missingAddDebounceClick"</span> <span class="token punctuation">&#125;</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>所以，我们可以使用这个验证我们研发的 eslint 插件是否符合预期，而且调试起来也比较方便，在 vscode 上开发的话，配置一个启动项即可，比如我配置了一个 launch.json;</p>
 <pre class="line-numbers language-json" data-language="json"><code class="language-json"><span class="token punctuation">&#123;</span>
-    <span class="token comment">// 使用 IntelliSense 了解相关属性。</span>
-    <span class="token comment">// 悬停以查看现有属性的描述。</span>
-    <span class="token comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span>
-    <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.2.0"</span><span class="token punctuation">,</span>
-    <span class="token property">"configurations"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">&#123;</span>
-            <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"pwa-node"</span><span class="token punctuation">,</span>
-            <span class="token property">"request"</span><span class="token operator">:</span> <span class="token string">"launch"</span><span class="token punctuation">,</span>
-            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Launch onClick test"</span><span class="token punctuation">,</span>
-            <span class="token property">"skipFiles"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-                <span class="token string">"&lt;node_internals>/**"</span>
-            <span class="token punctuation">]</span><span class="token punctuation">,</span>
-            <span class="token property">"program"</span><span class="token operator">:</span> <span class="token string">"$&#123;workspaceFolder&#125;/packages/eslint-plugin-tsign-weapp/tests/lib/rules/check-on-click-debounce.js"</span>
-        <span class="token punctuation">&#125;</span>
-    <span class="token punctuation">]</span>
-<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  <span class="token comment">// 使用 IntelliSense 了解相关属性。</span>
+  <span class="token comment">// 悬停以查看现有属性的描述。</span>
+  <span class="token comment">// 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.2.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"configurations"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">&#123;</span>
+      <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"pwa-node"</span><span class="token punctuation">,</span>
+      <span class="token property">"request"</span><span class="token operator">:</span> <span class="token string">"launch"</span><span class="token punctuation">,</span>
+      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Launch onClick test"</span><span class="token punctuation">,</span>
+      <span class="token property">"skipFiles"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"&lt;node_internals>/**"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token property">"program"</span><span class="token operator">:</span> <span class="token string">"$&#123;workspaceFolder&#125;/packages/eslint-plugin-tsign-weapp/tests/lib/rules/check-on-click-debounce.js"</span>
+    <span class="token punctuation">&#125;</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>这样一来，我们就可以展开调试了。</p>
 <p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316190601141.png" alt="image-20220316190601141"></p>
-<h5 id="检测原理介绍"><a href="#检测原理介绍" class="headerlink" title="检测原理介绍"></a>检测原理介绍</h5><p>1、首先我们需要拿到所有&lt;template 中被 @click 引用到的方法，这个可以通过递归遍历templateBody这个树解决。</p>
+<h5 id="检测原理介绍"><a href="#检测原理介绍" class="headerlink" title="检测原理介绍"></a>检测原理介绍</h5><p>1、首先我们需要拿到所有&lt;template 中被 @click 引用到的方法，这个可以通过递归遍历 templateBody 这个树解决。</p>
 <p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316191301667.png" alt="image-20220316191301667"></p>
-<p>如上图，我们只需要找到这个argument name是 click的这个结点中value里面的expression的name，就是我们要检测的方法</p>
-<p>2、基于上面找到的方法，我们在去methods的结点中去找到对应的方法，看看这个方法的body有没有被debounce包裹即可，如果没有哦就告警处理。</p>
+<p>如上图，我们只需要找到这个 argument name 是 click 的这个结点中 value 里面的 expression 的 name，就是我们要检测的方法</p>
+<p>2、基于上面找到的方法，我们在去 methods 的结点中去找到对应的方法，看看这个方法的 body 有没有被 debounce 包裹即可，如果没有哦就告警处理。</p>
 <h5 id="实际效果"><a href="#实际效果" class="headerlink" title="实际效果"></a>实际效果</h5><p><img src="/2022/03/16/%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%82%B9%E5%87%BB%E9%98%B2%E6%8A%96%E5%93%AA%E5%AE%B6%E5%BC%BA/image-20220316191949544.png" alt="image-20220316191949544"></p>
-
+<!-- flag of hidden posts -->
     </div>
 
     
@@ -461,15 +465,6 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-item">
-                <a href="/2022/03/11/uni%E8%BD%AC%E6%8D%A2%E7%9A%84async-await/" rel="prev" title="Uni转换的async Await">
-                  <i class="fa fa-chevron-left"></i> Uni转换的async Await
-                </a>
-            </div>
-            <div class="post-nav-item">
-            </div>
-          </div>
     </footer>
   </article>
 </div>
