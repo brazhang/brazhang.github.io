@@ -209,7 +209,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/09/21/hexo%E4%BD%BF%E7%94%A8type%E7%BC%96%E8%BE%91%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E9%A2%84%E8%A7%88%E7%9A%84%E5%9D%91%E7%9A%84%E8%A7%A3%E5%86%B3/">
+    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2022/03/10/uni%E5%A6%82%E4%BD%95%E6%A1%A5%E6%8E%A5%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -222,317 +222,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/21/hexo%E4%BD%BF%E7%94%A8type%E7%BC%96%E8%BE%91%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E9%A2%84%E8%A7%88%E7%9A%84%E5%9D%91%E7%9A%84%E8%A7%A3%E5%86%B3/" class="post-title-link" itemprop="url">Hexo使用typora编辑插入图片无法预览的坑的解决</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-09-21 21:34:52 / 修改时间：21:51:57" itemprop="dateCreated datePublished" datetime="2021-09-21T21:34:52+08:00">2021-09-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>事情是这个样子的，今天准备开个自己的博客，如是研究了下，使用 hexo 在 github 上发布博客是一个号的选择。</p>
-<p>hexo 可以参考这里 <a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/">https://hexo.io/zh-cn/</a><br>typora 可以参考这里 <a target="_blank" rel="noopener" href="https://typora.io/">https://typora.io/</a></p>
-<p>这两个哥们搭配，干活就珍惜不累了，安装hexo和安装typora的工作暂且就不在这里唠叨了，随便Google一下，相信你很快就可以安装上了。</p>
-<p>然后，这篇文章主要想说的是，在配置typora插图的过程中，遇到了一个坑，我是这么按照hexo的教程配置的：</p>
-<p><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/asset-folders">https://hexo.io/zh-cn/docs/asset-folders</a> </p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">_config<span class="token punctuation">.</span>yml
-post_asset_folder<span class="token operator">:</span> <span class="token boolean">true</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>据说，当资源文件管理功能打开后，Hexo将会在你每一次通过 <code>hexo new [layout] &lt;title&gt;</code> 命令创建新文章时自动创建一个文件夹。</p>
-<p><img src="/2021/09/21/hexo%E4%BD%BF%E7%94%A8type%E7%BC%96%E8%BE%91%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E9%A2%84%E8%A7%88%E7%9A%84%E5%9D%91%E7%9A%84%E8%A7%A3%E5%86%B3/image-20210921214156375.png" alt="image-20210921214156375"></p>
-<p>对的，没错，老铁，就是上面这个样子，一顿操作猛如虎，结果</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript">hexo g
-hexo d <span class="token comment">//部署到github上显示不了</span>
-hexo server <span class="token comment">//本地预览显示不了</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>看了一下，图片压根就显示不出来，看了下，明显图片路径有问题。</p>
-<p>后面看到一个哥们的文章，<a target="_blank" rel="noopener" href="https://cxyzjd.com/article/huyun9666/104256799">hexo使用markdown图片无法显示问题_jhhuang-程序员宅基地</a>然后install他的插件之后，发现部署到github上确实可以显示，but，本地没法预览呀，这个有点上火，看了下源码，就自己果断撸了一个；</p>
-<p><img src="/2021/09/21/hexo%E4%BD%BF%E7%94%A8type%E7%BC%96%E8%BE%91%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E9%A2%84%E8%A7%88%E7%9A%84%E5%9D%91%E7%9A%84%E8%A7%A3%E5%86%B3/image-20210921214625183.png" alt="image-20210921214625183"></p>
-<p>一通操作猛如虎，其实就改了这么几行，把作者之前的替换的路径</p>
-<p>//yousite/path/to/your/image.jgp  修改为了  /path/to/your/image.jgp</p>
-<p>需要的老铁可以直接使用我<a target="_blank" rel="noopener" href="https://github.com/bravekingzhang/hexo-asset-image">这个补丁</a>就ok啦 ，用法已经在readme中有详细介绍了。</p>
-<h4 id="最后附上我的所有关键配置"><a href="#最后附上我的所有关键配置" class="headerlink" title="最后附上我的所有关键配置"></a>最后附上我的所有关键配置</h4><h5 id="hexo的配置"><a href="#hexo的配置" class="headerlink" title="hexo的配置"></a>hexo的配置</h5><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"># Hexo Configuration
-## Docs<span class="token operator">:</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>hexo<span class="token punctuation">.</span>io<span class="token operator">/</span>docs<span class="token operator">/</span>configuration<span class="token punctuation">.</span>html
-## Source<span class="token operator">:</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>github<span class="token punctuation">.</span>com<span class="token operator">/</span>hexojs<span class="token operator">/</span>hexo<span class="token operator">/</span>
-
-# Site
-title<span class="token operator">:</span> 心随我动
-subtitle<span class="token operator">:</span>
-description<span class="token operator">:</span>
-author<span class="token operator">:</span> hz
-language<span class="token operator">:</span> zh<span class="token operator">-</span><span class="token constant">CN</span>
-timezone<span class="token operator">:</span> Asia<span class="token operator">/</span>Shanghai
-
-# <span class="token constant">URL</span>
-## If your site is put <span class="token keyword">in</span> a subdirectory<span class="token punctuation">,</span> <span class="token keyword">set</span> url <span class="token keyword">as</span> <span class="token string">'http://yoursite.com/child'</span> and root <span class="token keyword">as</span> <span class="token string">'/child/'</span>
-url<span class="token operator">:</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>blog<span class="token punctuation">.</span>brzhang<span class="token punctuation">.</span>club
-root<span class="token operator">:</span> <span class="token operator">/</span>
-permalink<span class="token operator">:</span> <span class="token operator">:</span>year<span class="token operator">/</span><span class="token operator">:</span>month<span class="token operator">/</span><span class="token operator">:</span>day<span class="token operator">/</span><span class="token operator">:</span>title<span class="token operator">/</span>
-permalink_defaults<span class="token operator">:</span>
-
-# Directory
-source_dir<span class="token operator">:</span> source
-public_dir<span class="token operator">:</span> <span class="token keyword">public</span>
-tag_dir<span class="token operator">:</span> tags
-archive_dir<span class="token operator">:</span> archives
-category_dir<span class="token operator">:</span> categories
-code_dir<span class="token operator">:</span> downloads<span class="token operator">/</span>code
-i18n_dir<span class="token operator">:</span> <span class="token operator">:</span>lang
-skip_render<span class="token operator">:</span>
-
-# Writing
-new_post_name<span class="token operator">:</span> <span class="token operator">:</span>title<span class="token punctuation">.</span>md # File name <span class="token keyword">of</span> <span class="token keyword">new</span> <span class="token class-name">posts</span>
-default_layout<span class="token operator">:</span> post
-titlecase<span class="token operator">:</span> <span class="token boolean">false</span> # Transform title into titlecase
-external_link<span class="token operator">:</span> <span class="token boolean">true</span> # Open external links <span class="token keyword">in</span> <span class="token keyword">new</span> <span class="token class-name">tab</span>
-filename_case<span class="token operator">:</span> <span class="token number">0</span>
-render_drafts<span class="token operator">:</span> <span class="token boolean">false</span>
-post_asset_folder<span class="token operator">:</span> <span class="token boolean">true</span>
-marked<span class="token operator">:</span>
-  prependRoot<span class="token operator">:</span> <span class="token boolean">false</span>
-  postAsset<span class="token operator">:</span> <span class="token boolean">true</span>
-  lazyload<span class="token operator">:</span> <span class="token boolean">true</span>
-relative_link<span class="token operator">:</span> <span class="token boolean">true</span>
-future<span class="token operator">:</span> <span class="token boolean">true</span>
-highlight<span class="token operator">:</span>
-  enable<span class="token operator">:</span> <span class="token boolean">true</span>
-  line_number<span class="token operator">:</span> <span class="token boolean">true</span>
-  auto_detect<span class="token operator">:</span> <span class="token boolean">false</span>
-  tab_replace<span class="token operator">:</span>
-
-# Home page setting
-# path<span class="token operator">:</span> Root path <span class="token keyword">for</span> your blogs index page<span class="token punctuation">.</span> <span class="token punctuation">(</span><span class="token keyword">default</span> <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">)</span>
-# per_page<span class="token operator">:</span> Posts displayed per page<span class="token punctuation">.</span> <span class="token punctuation">(</span><span class="token number">0</span> <span class="token operator">=</span> disable pagination<span class="token punctuation">)</span>
-# order_by<span class="token operator">:</span> Posts order<span class="token punctuation">.</span> <span class="token punctuation">(</span>Order by date descending by <span class="token keyword">default</span><span class="token punctuation">)</span>
-index_generator<span class="token operator">:</span>
-  path<span class="token operator">:</span> <span class="token string">""</span>
-  per_page<span class="token operator">:</span> <span class="token number">10</span>
-  order_by<span class="token operator">:</span> <span class="token operator">-</span>date
-
-# Category <span class="token operator">&amp;</span> Tag
-default_category<span class="token operator">:</span> uncategorized
-category_map<span class="token operator">:</span>
-tag_map<span class="token operator">:</span>
-
-# Date <span class="token operator">/</span> Time format
-## Hexo uses Moment<span class="token punctuation">.</span>js to parse and display date
-## You can customize the date format <span class="token keyword">as</span> defined <span class="token keyword">in</span>
-## http<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>momentjs<span class="token punctuation">.</span>com<span class="token operator">/</span>docs<span class="token operator">/</span>#<span class="token operator">/</span>displaying<span class="token operator">/</span>format<span class="token operator">/</span>
-date_format<span class="token operator">:</span> <span class="token constant">YYYY</span><span class="token operator">-</span><span class="token constant">MM</span><span class="token operator">-</span><span class="token constant">DD</span>
-time_format<span class="token operator">:</span> <span class="token constant">HH</span><span class="token operator">:</span>mm<span class="token operator">:</span>ss
-
-# Pagination
-## Set per_page to <span class="token number">0</span> to disable pagination
-per_page<span class="token operator">:</span> <span class="token number">10</span>
-pagination_dir<span class="token operator">:</span> page
-
-# Extensions
-## Plugins<span class="token operator">:</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>hexo<span class="token punctuation">.</span>io<span class="token operator">/</span>plugins<span class="token operator">/</span>
-## Themes<span class="token operator">:</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>hexo<span class="token punctuation">.</span>io<span class="token operator">/</span>themes<span class="token operator">/</span>
-
-tag_generator<span class="token operator">:</span>
-  per_page<span class="token operator">:</span> <span class="token number">10</span>
-  order_by<span class="token operator">:</span> <span class="token operator">-</span>date
-
-theme<span class="token operator">:</span> ocean
-
-# Deployment
-## Docs<span class="token operator">:</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>hexo<span class="token punctuation">.</span>io<span class="token operator">/</span>docs<span class="token operator">/</span>deployment<span class="token punctuation">.</span>html
-deploy<span class="token operator">:</span>
-  type<span class="token operator">:</span> git
-  repository<span class="token operator">:</span> https<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>github<span class="token punctuation">.</span>com<span class="token operator">/</span>bravekingzhang<span class="token operator">/</span>bravekingzhang<span class="token punctuation">.</span>github<span class="token punctuation">.</span>io<span class="token punctuation">.</span>git
-  brance<span class="token operator">:</span> master
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>typora的图片上传配置</p>
-<p><img src="/2021/09/21/hexo%E4%BD%BF%E7%94%A8type%E7%BC%96%E8%BE%91%E6%8F%92%E5%85%A5%E5%9B%BE%E7%89%87%E6%97%A0%E6%B3%95%E9%A2%84%E8%A7%88%E7%9A%84%E5%9D%91%E7%9A%84%E8%A7%A3%E5%86%B3/image-20210921215142921.png" alt="image-20210921215142921"></p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/09/21/%E4%B8%BA%E5%95%A5API%E8%AE%BE%E8%AE%A1%E5%A6%82%E6%AD%A4%E9%87%8D%E8%A6%81/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/21/%E4%B8%BA%E5%95%A5API%E8%AE%BE%E8%AE%A1%E5%A6%82%E6%AD%A4%E9%87%8D%E8%A6%81/" class="post-title-link" itemprop="url">为啥API设计如此重要</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-      
-
-      <time title="创建时间：2021-09-21 17:25:38 / 修改时间：21:31:27" itemprop="dateCreated datePublished" datetime="2021-09-21T17:25:38+08:00">2021-09-21</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="为什么-API-设计很重要？"><a href="#为什么-API-设计很重要？" class="headerlink" title="为什么 API 设计很重要？"></a>为什么 API 设计很重要？</h4><ul>
-<li>API 可以是一个公司最重要的资产之一【<strong>客户投入大量资金：购买、编写、学习</strong><br><strong>停止使用 API 的成本可能很高，成功的公共 API 可以捕获客户</strong>】</li>
-<li>也可能是公司最大的负债之一 【<strong>不好的 API 会导致无休止的支持电话流</strong>】</li>
-<li>公共 API 是永久性的【<strong>只有一次机会可以做好它</strong>】</li>
-</ul>
-<h4 id="为什么-API-设计对你很重要？"><a href="#为什么-API-设计对你很重要？" class="headerlink" title="为什么 API 设计对你很重要？"></a>为什么 API 设计对你很重要？</h4><p>如果你编程，你就是一个 API 设计师，好的代码是模块化的–每个模块都有一个 API</p>
-<ul>
-<li>有用的模块往往会被重复使用<br>一旦模块有了用户，就不能随意改变 API _好的可重复使用的模块是企业资产</li>
-<li>从 API 的角度思考问题可以提高代码质量</li>
-</ul>
-<h4 id="好的-API-的特点"><a href="#好的-API-的特点" class="headerlink" title="好的 API 的特点"></a>好的 API 的特点</h4><ul>
-<li>易于学习</li>
-<li>易于使用，即使没有文档</li>
-<li>难以误用</li>
-<li>易于阅读和维护使用它的代码 - 足够强大以满足需求 - 易于扩展</li>
-<li>适合受众</li>
-</ul>
-<h4 id="好的API是如何设计出来的"><a href="#好的API是如何设计出来的" class="headerlink" title="好的API是如何设计出来的"></a>好的API是如何设计出来的</h4><p>一般来说，好的API需要遵循一下几大类设计</p>
-<p><img src="/2021/09/21/%E4%B8%BA%E5%95%A5API%E8%AE%BE%E8%AE%A1%E5%A6%82%E6%AD%A4%E9%87%8D%E8%A6%81/image-20210921194438582.png" alt="image-20210921194438582"></p>
-<h5 id="收集需求–带着一定程度的怀疑态度"><a href="#收集需求–带着一定程度的怀疑态度" class="headerlink" title="收集需求–带着一定程度的怀疑态度"></a>收集需求–带着一定程度的怀疑态度</h5><ul>
-<li>通常你会得到建议的解决方案 _ 可能存在更好的解决方案</li>
-<li>你的工作是提取真正的需求 _ 应该采取用例的形式</li>
-<li>建立一个更普遍的东西可能更容易，也更有意义。</li>
-</ul>
-<h5 id="一切从简"><a href="#一切从简" class="headerlink" title="一切从简"></a>一切从简</h5><ul>
-<li>在这个阶段，敏捷性胜过完整性</li>
-<li>尽可能让更多的人了解规格，听取他们的意见并认真对待</li>
-<li>如果你保持简短的规格，就很容易修改。</li>
-<li>当你获得信心时，就可以使其更加完善_这必然涉及到编码问题</li>
-</ul>
-<h5 id="API应该只做一件事，而且要做得极致"><a href="#API应该只做一件事，而且要做得极致" class="headerlink" title="API应该只做一件事，而且要做得极致"></a>API应该只做一件事，而且要做得极致</h5><ul>
-<li>功能应该容易解释<br>如果它很难被命名，这通常是个坏兆头 _ 好的名字能推动开发<br>_ 要便于拆分和合并模块</li>
-</ul>
-<h5 id="尽量自闭环"><a href="#尽量自闭环" class="headerlink" title="尽量自闭环"></a>尽量自闭环</h5><ul>
-<li>尽可能地使类和成员成为私有的</li>
-<li>公有类应该没有公有字段<br>(常量除外)</li>
-<li>这样可以最大限度地隐藏信息</li>
-<li>允许模块被独立使用、理解、构建、测试和调试</li>
-</ul>
-<h5 id="名字很重要–名称应该基本上是不言自明的-避免使用隐晦的缩略语"><a href="#名字很重要–名称应该基本上是不言自明的-避免使用隐晦的缩略语" class="headerlink" title="名字很重要–名称应该基本上是不言自明的 _ 避免使用隐晦的缩略语"></a>名字很重要–名称应该基本上是不言自明的 _ 避免使用隐晦的缩略语</h5><ul>
-<li><p>要一致–相同的词意味着相同的事情 _ 在整个API中，（在平台的各个API中）。</p>
-</li>
-<li><p>要有规律–力求对称–代码应该像散文一样阅读</p>
-<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">if</span> <span class="token punctuation">(</span>car<span class="token punctuation">.</span><span class="token function">speed</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">></span> <span class="token number">2</span> <span class="token operator">*</span> <span class="token constant">SPEED_LIMIT</span><span class="token punctuation">)</span> 
-  <span class="token function">generateAlert</span><span class="token punctuation">(</span><span class="token string">"Watch out for cops!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-</li>
-</ul>
-<h5 id="总体来说，API设计是一项高尚而有意义的工作，它可以改善程序员、终端用户、公司的命运。"><a href="#总体来说，API设计是一项高尚而有意义的工作，它可以改善程序员、终端用户、公司的命运。" class="headerlink" title="总体来说，API设计是一项高尚而有意义的工作，它可以改善程序员、终端用户、公司的命运。"></a>总体来说，API设计是一项高尚而有意义的工作，它可以改善程序员、终端用户、公司的命运。</h5><ul>
-<li>这个讲座涵盖了这门手艺的一些启发式方法 _ 不要一味地遵守它们，但是……<br>不要在没有充分理由的情况下违反它们</li>
-<li>API设计是艰难的<br>-不是一个单独的活动<br>-完美是不可能的，但还是要努力。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://blog.brzhang.club/2021/09/21/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%AF%84%E8%AE%BA/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="hz">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="心随我动">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/09/21/%E7%BB%99%E5%8D%9A%E5%AE%A2%E5%8A%A0%E4%B8%80%E4%B8%AA%E8%AF%84%E8%AE%BA/" class="post-title-link" itemprop="url">给博客加一个评论</a>
+          <a href="/2022/03/10/uni%E5%A6%82%E4%BD%95%E6%A1%A5%E6%8E%A5%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%9A%84/" class="post-title-link" itemprop="url">Uni如何桥接小程序的</a>
         </h2>
 
         <div class="post-meta-container">
@@ -543,14 +233,14 @@ deploy<span class="token operator">:</span>
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-09-21 17:25:38" itemprop="dateCreated datePublished" datetime="2021-09-21T17:25:38+08:00">2021-09-21</time>
+      <time title="创建时间：2022-03-10 20:00:33" itemprop="dateCreated datePublished" datetime="2022-03-10T20:00:33+08:00">2022-03-10</time>
     </span>
       <span class="post-meta-item">
         <span class="post-meta-item-icon">
           <i class="far fa-calendar-check"></i>
         </span>
         <span class="post-meta-item-text">更新于</span>
-        <time title="修改时间：2021-10-05 19:24:50" itemprop="dateModified" datetime="2021-10-05T19:24:50+08:00">2021-10-05</time>
+        <time title="修改时间：2022-03-11 10:56:12" itemprop="dateModified" datetime="2022-03-11T10:56:12+08:00">2022-03-11</time>
       </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -558,7 +248,7 @@ deploy<span class="token operator">:</span>
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">技术</span></a>
+          <a href="/categories/default/" itemprop="url" rel="index"><span itemprop="name">default</span></a>
         </span>
     </span>
 
@@ -572,10 +262,220 @@ deploy<span class="token operator">:</span>
     
     
     <div class="post-body" itemprop="articleBody">
-          <h3 id="添加一个主题"><a href="#添加一个主题" class="headerlink" title="添加一个主题"></a>添加一个主题</h3><p>主题我选择的是这个 <a target="_blank" rel="noopener" href="https://github.com/zhwangart/hexo-theme-ocean">https://github.com/zhwangart/hexo-theme-ocean</a></p>
-<p>如果愿意折腾，完全可以自己选择一个</p>
-<h3 id="添加评论系统，虽然看的人也不都，但要有"><a href="#添加评论系统，虽然看的人也不都，但要有" class="headerlink" title="添加评论系统，虽然看的人也不都，但要有"></a>添加评论系统，虽然看的人也不都，但要有</h3><p>给自己的博客加一个评论系统，采用的是<code>gitalk</code> ，这个玩意还挺简单的，在 github 上申请一个 AuthApp 就 ok 啦，填入相应的参数，搞定，参考这篇文章。</p>
-<p><a target="_blank" rel="noopener" href="https://iochen.com/post/use-gitalk-in-hexo/">https://iochen.com/post/use-gitalk-in-hexo/</a></p>
+          <p>uni编译后的代码</p>
+<pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">const</span> getEmitter <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">let</span> Emitter<span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token function">getUniEmitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>Emitter<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      Emitter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Vue</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> Emitter<span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">apply</span><span class="token punctuation">(</span><span class="token parameter">ctx<span class="token punctuation">,</span> method<span class="token punctuation">,</span> args</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> ctx<span class="token punctuation">[</span>method<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">function</span> <span class="token function">$on</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token function">apply</span><span class="token punctuation">(</span><span class="token function">getEmitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"$on"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token operator">...</span>arguments<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">$off</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token function">apply</span><span class="token punctuation">(</span><span class="token function">getEmitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"$off"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token operator">...</span>arguments<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">$once</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token function">apply</span><span class="token punctuation">(</span><span class="token function">getEmitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"$once"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token operator">...</span>arguments<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">function</span> <span class="token function">$emit</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token function">apply</span><span class="token punctuation">(</span><span class="token function">getEmitter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"$emit"</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token operator">...</span>arguments<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="uni连接vue和小程序的桥梁"><a href="#uni连接vue和小程序的桥梁" class="headerlink" title="uni连接vue和小程序的桥梁"></a>uni连接vue和小程序的桥梁</h5><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">initProperties</span><span class="token punctuation">(</span>props<span class="token punctuation">,</span> isBehavior <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> file <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">const</span> properties <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isBehavior<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    properties<span class="token punctuation">.</span>vueId <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      type<span class="token operator">:</span> String<span class="token punctuation">,</span>
+      value<span class="token operator">:</span> <span class="token string">""</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token comment">// 用于字节跳动小程序模拟抽象节点</span>
+    properties<span class="token punctuation">.</span>generic <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      type<span class="token operator">:</span> Object<span class="token punctuation">,</span>
+      value<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    properties<span class="token punctuation">.</span>vueSlots <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+      <span class="token comment">// 小程序不能直接定义 $slots 的 props，所以通过 vueSlots 转换到 $slots</span>
+      type<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+      value<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token function">observer</span><span class="token punctuation">(</span><span class="token parameter">newVal<span class="token punctuation">,</span> oldVal</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">const</span> $slots <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        newVal<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">slotName</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+          $slots<span class="token punctuation">[</span>slotName<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">setData</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span><span class="token comment">//调用小程序的setData</span>
+          $slots<span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// ['title']</span>
+    props<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">key</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+      properties<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        type<span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+        observer<span class="token operator">:</span> <span class="token function">createObserver</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isPlainObject</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token comment">// &#123;title:&#123;type:String,default:''&#125;,content:String&#125;</span>
+    Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">key</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">const</span> opts <span class="token operator">=</span> props<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isPlainObject</span><span class="token punctuation">(</span>opts<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// title:&#123;type:String,default:''&#125;</span>
+        <span class="token keyword">let</span> value <span class="token operator">=</span> opts<span class="token punctuation">.</span>default<span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isFn</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          value <span class="token operator">=</span> <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        opts<span class="token punctuation">.</span>type <span class="token operator">=</span> <span class="token function">parsePropType</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>type<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        properties<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+          type<span class="token operator">:</span> <span class="token constant">PROP_TYPES</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>opts<span class="token punctuation">.</span>type<span class="token punctuation">)</span> <span class="token operator">!==</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">?</span> opts<span class="token punctuation">.</span>type <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+          value<span class="token punctuation">,</span>
+          observer<span class="token operator">:</span> <span class="token function">createObserver</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// content:String</span>
+        <span class="token keyword">const</span> type <span class="token operator">=</span> <span class="token function">parsePropType</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> opts<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        properties<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+          type<span class="token operator">:</span> <span class="token constant">PROP_TYPES</span><span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span>type<span class="token punctuation">)</span> <span class="token operator">!==</span> <span class="token operator">-</span><span class="token number">1</span> <span class="token operator">?</span> type <span class="token operator">:</span> <span class="token keyword">null</span><span class="token punctuation">,</span>
+          observer<span class="token operator">:</span> <span class="token function">createObserver</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">return</span> properties<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="uni创建页面和组件"><a href="#uni创建页面和组件" class="headerlink" title="uni创建页面和组件"></a>uni创建页面和组件</h5><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token comment">//小程序的component https://developers.weixin.qq.com/miniprogram/dev/reference/api/Component.html</span>
+<span class="token keyword">function</span> <span class="token function">createPage</span><span class="token punctuation">(</span><span class="token parameter">vuePageOptions</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">Component</span><span class="token punctuation">(</span><span class="token function">parsePage</span><span class="token punctuation">(</span>vuePageOptions<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">function</span> <span class="token function">createComponent</span><span class="token punctuation">(</span><span class="token parameter">vueOptions</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token keyword">return</span> <span class="token function">Component</span><span class="token punctuation">(</span><span class="token function">parseComponent</span><span class="token punctuation">(</span>vueOptions<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h5 id="uni创建App"><a href="#uni创建App" class="headerlink" title="uni创建App"></a>uni创建App</h5><pre class="line-numbers language-javascript" data-language="javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">createApp</span><span class="token punctuation">(</span><span class="token parameter">vm</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">App</span><span class="token punctuation">(</span><span class="token function">parseApp</span><span class="token punctuation">(</span>vm<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//小程序的App方法https://developers.weixin.qq.com/miniprogram/dev/reference/api/App.html</span>
+  <span class="token keyword">return</span> vm<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">function</span> <span class="token function">parseApp</span><span class="token punctuation">(</span><span class="token parameter">vm</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token keyword">return</span> <span class="token function">parseBaseApp</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span>
+    mocks<span class="token punctuation">,</span>
+    initRefs<span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">const</span> hooks <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token string">"onShow"</span><span class="token punctuation">,</span>
+  <span class="token string">"onHide"</span><span class="token punctuation">,</span>
+  <span class="token string">"onError"</span><span class="token punctuation">,</span>
+  <span class="token string">"onPageNotFound"</span><span class="token punctuation">,</span>
+  <span class="token string">"onThemeChange"</span><span class="token punctuation">,</span>
+  <span class="token string">"onUnhandledRejection"</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token keyword">function</span> <span class="token function">parseBaseApp</span><span class="token punctuation">(</span><span class="token parameter">vm<span class="token punctuation">,</span> <span class="token punctuation">&#123;</span> mocks<span class="token punctuation">,</span> initRefs <span class="token punctuation">&#125;</span></span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+  <span class="token function">initEventChannel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token function">initScopedSlotsParams</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>$options<span class="token punctuation">.</span>store<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$store <span class="token operator">=</span> vm<span class="token punctuation">.</span>$options<span class="token punctuation">.</span>store<span class="token punctuation">;</span><span class="token comment">//挂在store</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token class-name">Vue</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>mpHost <span class="token operator">=</span> <span class="token string">"mp-weixin"</span><span class="token punctuation">;</span>
+
+  Vue<span class="token punctuation">.</span><span class="token function">mixin</span><span class="token punctuation">(</span><span class="token punctuation">&#123;</span>
+    <span class="token function">beforeCreate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>$options<span class="token punctuation">.</span>mpType<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>mpType <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$options<span class="token punctuation">.</span>mpType<span class="token punctuation">;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$mp <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        data<span class="token operator">:</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+        <span class="token punctuation">[</span><span class="token keyword">this</span><span class="token punctuation">.</span>mpType<span class="token punctuation">]</span><span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$options<span class="token punctuation">.</span>mpInstance<span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$scope <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$options<span class="token punctuation">.</span>mpInstance<span class="token punctuation">;</span>
+
+      <span class="token keyword">delete</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$options<span class="token punctuation">.</span>mpType<span class="token punctuation">;</span>
+      <span class="token keyword">delete</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$options<span class="token punctuation">.</span>mpInstance<span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>mpType <span class="token operator">===</span> <span class="token string">"page"</span> <span class="token operator">&amp;&amp;</span> <span class="token keyword">typeof</span> getApp <span class="token operator">===</span> <span class="token string">"function"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// hack vue-i18n</span>
+        <span class="token keyword">const</span> app <span class="token operator">=</span> <span class="token function">getApp</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>app<span class="token punctuation">.</span>$vm <span class="token operator">&amp;&amp;</span> app<span class="token punctuation">.</span>$vm<span class="token punctuation">.</span>$i18n<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>_i18n <span class="token operator">=</span> app<span class="token punctuation">.</span>$vm<span class="token punctuation">.</span>$i18n<span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>mpType <span class="token operator">!==</span> <span class="token string">"app"</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token function">initRefs</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">initMocks</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">,</span> mocks<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">const</span> appOptions <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+    <span class="token function">onLaunch</span><span class="token punctuation">(</span><span class="token parameter">args</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span><span class="token comment">//这里定义了onLaunch，其他在hooks中</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>$vm<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token comment">// 已经初始化过了，主要是为了百度，百度 onShow 在 onLaunch 之前</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>wx<span class="token punctuation">.</span>canIUse <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>wx<span class="token punctuation">.</span><span class="token function">canIUse</span><span class="token punctuation">(</span><span class="token string">"nextTick"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+          <span class="token comment">// 事实 上2.2.3 即可，简单使用 2.3.0 的 nextTick 判断</span>
+          console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>
+            <span class="token string">"当前微信基础库版本过低，请将 微信开发者工具-详情-项目设置-调试基础库版本 更换为`2.3.0`以上"</span>
+          <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$vm <span class="token operator">=</span> vm<span class="token punctuation">;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$vm<span class="token punctuation">.</span>$mp <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        app<span class="token operator">:</span> <span class="token keyword">this</span><span class="token punctuation">,</span>
+      <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$vm<span class="token punctuation">.</span>$scope <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+      <span class="token comment">// vm 上也挂载 globalData</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$vm<span class="token punctuation">.</span>globalData <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>globalData<span class="token punctuation">;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$vm<span class="token punctuation">.</span>_isMounted <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$vm<span class="token punctuation">.</span><span class="token function">__call_hook</span><span class="token punctuation">(</span><span class="token string">"mounted"</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$vm<span class="token punctuation">.</span><span class="token function">__call_hook</span><span class="token punctuation">(</span><span class="token string">"onLaunch"</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">,</span>
+  <span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// 兼容旧版本 globalData</span>
+  appOptions<span class="token punctuation">.</span>globalData <span class="token operator">=</span> vm<span class="token punctuation">.</span>$options<span class="token punctuation">.</span>globalData <span class="token operator">||</span> <span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span>
+  <span class="token comment">// 将 methods 中的方法挂在 getApp() 中</span>
+  <span class="token keyword">const</span> <span class="token punctuation">&#123;</span> methods <span class="token punctuation">&#125;</span> <span class="token operator">=</span> vm<span class="token punctuation">.</span>$options<span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>methods<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>methods<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">name</span><span class="token punctuation">)</span> <span class="token operator">=></span> <span class="token punctuation">&#123;</span>
+      appOptions<span class="token punctuation">[</span>name<span class="token punctuation">]</span> <span class="token operator">=</span> methods<span class="token punctuation">[</span>name<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+
+  <span class="token function">initHooks</span><span class="token punctuation">(</span>appOptions<span class="token punctuation">,</span> hooks<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">return</span> appOptions<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
       
     </div>
@@ -595,7 +495,7 @@ deploy<span class="token operator">:</span>
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/">23</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 </div>
